@@ -3,6 +3,7 @@ import { ref } from 'vue'; // data()
 
 const type = ref("achats");
 const filtres = ref([]);
+const options = ref([])
 // faire un onclick mettre à zéro les ref
 function recharger() {
 
@@ -31,118 +32,111 @@ function recharger() {
 
     <div class="input-group mb-3 w-50 p-3">
       <label class="input-group-text" for="inputGroupSelect01">Catégories</label>
-      <select class="form-select" id="catégories">
-        <!-- <c:if test="${ ! empty listeCategorie }"> -->
-        <option selected>Toutes</option>
-        <c:forEach var="categorie" items="${ listeCategorie }">
-          <option value="${categorie.no_categorie }">${categorie.libelle }</option>
-        </c:forEach>
-        <!-- </c:if> -->
+      <select class="form-select" id="catégories" v-model="options">
+
+        <div>
+          <option disabled value="">Toutes</option>
+          <div v-for="categorie in listeCategorie" :key="categorie.id">
+            <option value={{categorie.no_categorie}}>{{ categorie.libelle }}</option>
+          </div>
+        </div>
+
       </select>
-
     </div>
-
-
-    <!-- TODO faire une fonction Javascript qui permettra de mettre en disabled les inputs selon
-qu'on clique  sur Achats ou Mes Ventes car avec le Java ça rechargera à chaque fois la page  -->
-
-    <!-- <c:if test="${! empty utilisateur.pseudo }"> -->
 
     <!-- si l'utilisateur est connecté on affiche les champs Achats et Ventes  -->
+    <div v-if="utilisateur">
 
-    <div class="d-flex justify-content-around w-50 pb-4">
+      <div class="d-flex justify-content-around w-50 pb-4">
 
-      <div>
         <div>
-          <input type="radio" id="achats" value="achats" v-model="type" @click="recharger" />
-          <label for="achats">Achats</label>
+          <div>
+            <input type="radio" id="achats" value="achats" v-model="type" @click="recharger" />
+            <label for="achats">Achats</label>
 
+          </div>
+
+          <div class="ms-5">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="encheres_ouvertes" id="encheres_ouvertes"
+                v-model="filtres" :disabled="type == 'ventes'">
+              <label class="form-check-label" for="encheres_ouvertes">
+                enchères ouvertes </label>
+            </div>
+
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="encheres_en_cours" id="encheres_en_cours"
+                v-model="filtres" :disabled="type == 'ventes'"> <label class="form-check-label" for="encheres_en_cours">
+                Mes
+                enchères en cours </label>
+            </div>
+
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="encheres_remporte" id="encheres_remporte"
+                v-model="filtres" :disabled="type == 'ventes'"> <label class="form-check-label" for="encheres_remporte">
+                Mes
+                enchères remportées </label>
+            </div>
+          </div>
         </div>
 
-        <div class="ms-5">
-          <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="encheres_ouvertes" id="encheres_ouvertes"
-              v-model="filtres" :disabled="type == 'ventes'">
-            <label class="form-check-label" for="encheres_ouvertes">
-              enchères ouvertes </label>
-          </div>
-
-          <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="encheres_en_cours" id="encheres_en_cours"
-              v-model="filtres" :disabled="type == 'ventes'"> <label class="form-check-label" for="encheres_en_cours">
-              Mes
-              enchères en cours </label>
-          </div>
-
-          <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="encheres_remporte" id="encheres_remporte"
-              v-model="filtres" :disabled="type == 'ventes'"> <label class="form-check-label" for="encheres_remporte">
-              Mes
-              enchères remportées </label>
-          </div>
-        </div>
-      </div>
-
- <div>{{ filtres }}</div>
-      <div>
         <div>
-          <!-- v-model le même entre achat et vente -->
-          <input type="radio" id="ventes" value="ventes" v-model="type" @click="recharger" />
-          <label for="ventes">Mes Ventes</label>
-        </div>
+          <div>
+            <!-- v-model le même entre achat et vente -->
+            <input type="radio" id="ventes" value="ventes" v-model="type" @click="recharger" />
+            <label for="ventes">Mes Ventes</label>
+          </div>
 
-        <!-- <c:choose>
+          <!-- <c:choose>
           <c:when test="${! empty utilisateur.pseudo}"> -->
-        <div class="ms-5">
-          <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="ventes_en_cours" id="ventes_en_cours"
-              v-model="filtres" :disabled="type == 'achats'">
-            <label class="form-check-label" for="ventes_en_cours">
-              mes ventes en cours </label>
-          </div>
+          <div class="ms-5">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="ventes_en_cours" id="ventes_en_cours"
+                v-model="filtres" :disabled="type == 'achats'">
+              <label class="form-check-label" for="ventes_en_cours">
+                mes ventes en cours </label>
+            </div>
 
-          <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="ventes_non_debute" id="ventes_non_debute"
-              v-model="filtres" :disabled="type == 'achats'">
-            <label class="form-check-label" for="ventes_non_debute">
-              ventes non débutées </label>
-          </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="ventes_non_debute" id="ventes_non_debute"
+                v-model="filtres" :disabled="type == 'achats'">
+              <label class="form-check-label" for="ventes_non_debute">
+                ventes non débutées </label>
+            </div>
 
-          <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="ventes_termine" id="ventes_termine" v-model="filtres"
-              :disabled="type == 'achats'">
-            <label class="form-check-label" for="ventes_termine"> ventes
-              terminées </label>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="ventes_termine" id="ventes_termine"
+                v-model="filtres" :disabled="type == 'achats'">
+              <label class="form-check-label" for="ventes_termine"> ventes
+                terminées </label>
+            </div>
           </div>
-        </div>
-        <!-- </c:when>
+          <!-- </c:when>
         </c:choose> -->
-      </div>
-    </div>
-
-    <div class="d-flex justify-content-around">
-      <div v-if="article">
-        <div v-for="article in listeArticles" :key="article.id">
-
         </div>
-        <div class="card" style="width: 18rem;">
-          <div class="card-body ">
+      </div>
 
-            <img class="card-img-top" :src="article.image_article" :alt="article.nom_article">
-            <h5 class="card-title mt-2">{{ article.nom_article }}</h5>
-            <div>Prix : {{ article.prix_initial }} points</div>
-            <p class="card-text">Fin de l'enchère :
-              {{ article.date_fin_encheres }}</p>
+      <div class="d-flex justify-content-around">
+        <div v-if="article">
+          <div v-for="article in listeArticles" :key="article.id">
 
-            <!-- TODO => créer un article avec un utilisateur pour puvoir récupérer le pseudo sinon null -->
-            <p class="card-text">Vendeur : {{ article.utilisateur.pseudo }}</p>
+          </div>
+          <div class="card" style="width: 18rem;">
+            <div class="card-body ">
 
+              <img class="card-img-top" :src="article.image_article" :alt="article.nom_article">
+              <h5 class="card-title mt-2">{{ article.nom_article }}</h5>
+              <div>Prix : {{ article.prix_initial }} points</div>
+              <p class="card-text">Fin de l'enchère :
+                {{ article.date_fin_encheres }}</p>
+
+              <!-- TODO => créer un article avec un utilisateur pour pouvoir récupérer le pseudo sinon null -->
+              <p class="card-text">Vendeur : {{ article.utilisateur.pseudo }}</p>
+
+            </div>
           </div>
         </div>
       </div>
-
-
-
     </div>
 
   </div>
