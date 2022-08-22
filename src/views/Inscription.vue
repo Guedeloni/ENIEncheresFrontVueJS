@@ -1,0 +1,106 @@
+<script>
+export default {
+    name: "Inscription"
+}
+</script>
+
+<template>
+    <div>
+        <h2>Inscription</h2>
+
+        <div class="container-md">
+
+            <h2>Creer mon Profil</h2>
+
+            <form method="post" action="${pageContext.request.contextPath}/InscriptionServlet">
+
+                <div class="d-flex justify-content-around align-items-center w-50 p-3">
+                    <div>
+                        <div class="form-group">
+                            <label for="Pseudo">Pseudo</label> <input type="text" class="form-control" id="pseudo"
+                                aria-describedby="pseudo" placeholder="votre pseudo" name="pseudo"
+                                value="${param.pseudo}">
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <label for="nom">Nom</label> <input type="text" class="form-control" id="nom"
+                                placeholder="Doe" name="nom" value="${param.nom}">
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <label for="prénom">Prénom</label> <input type="text" class="form-control" id="prenom"
+                                placeholder="John" name="prenom" value="${param.prenom}">
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <label for="email">Email</label> <input type="email" class="form-control" id="email"
+                                aria-describedby="email" placeholder="john-doe@gmail.com" name="email"
+                                value="${param.email}">
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <label for="telephone">Téléphone</label> <input type="text" class="form-control"
+                                id="telephone" aria-describedby="telephone" placeholder="06 12 39 84 52"
+                                name="telephone" value="${param.telephone}">
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <label for="rue">Rue</label> <input type="text" class="form-control" id="rue"
+                                placeholder="12 rue de l'Eni" name="rue" value="${param.rue}">
+                        </div>
+
+                    </div>
+
+                    <div class="mt-3">
+                        <div class="form-group mt-3">
+                            <label for="code_postal">Code postal</label> <input type="text" class="form-control"
+                                id="code_postal" placeholder="44000" name="code_postal" value="${param.code_postal}">
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <label for="ville">Ville</label> <input type="text" class="form-control" id="ville"
+                                placeholder="Nantes" name="ville" value="${param.ville}">
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <label for="Mot de passe actuel">Mot de passe</label> <input type="password"
+                                class="form-control" id="mot_de_passe" name="mot_de_passe"
+                                value="${param.mot_de_passe}">
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <label for="confirmation mot de passe">Confirmation</label> <input type="password"
+                                class="form-control" id="mot_de_passe" name="confirmation_mdp"
+                                value="${param.mot_de_passe}">
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="d-flex justify-content-around w-25 mt-3">
+
+                    <div>
+                        <button type="submit" class="btn btn-primary">Creer</button>
+                    </div>
+
+                    <div>
+                        <a href="/encheres">
+                        <button type="submit" class="btn btn-primary">Annuler</button>
+                        </a>
+                    </div>
+                </div>
+
+            </form>
+
+            <div class="d-flex justify-content-around text-danger fs-5 fw-bold w-50 my-3">
+                <!-- <c:if test="${ requestScope.message != '' }"> -->
+                    <p>${ requestScope.message }</p>
+                <!-- </c:if> -->
+            </div>
+
+        </div>
+    </div>
+</template>
+
+<style scoped>
+</style>
