@@ -3,12 +3,13 @@ import { ref } from 'vue'
 
 const pseudo = ref("")
 const password = ref("")
+const messageConfirmation = ref("")
 
 async function login() {
     // le corps de notre requête HTTP (format JSON)
     const body = {
-        pseudo: username.value,
-        password: password.value
+        pseudo: pseudo.value,
+        motDePasse: password.value
     }
     // On envoie une requête POST sur l'url BASE_URL + “login" avec les données définies plus haut
     const result = await axios.post("login", body);
@@ -32,20 +33,32 @@ async function login() {
         <form method="post" action="">
             <div class="form-group w-25">
                 <label for="pseudo">Identifiant</label>
-                <input type="text" class="form-control" id="pseudo" name="pseudoInput" aria-describedby="pseudo"
-                    placeholder="NineJea" v-model="pseudo">
+                <input 
+                    type="text" 
+                    class="form-control" 
+                    id="pseudo" 
+                    name="pseudoInput" 
+                    aria-describedby="pseudo"
+                    placeholder="NineJea" 
+                    v-model="pseudo"
+                >
             </div>
 
             <div class="form-group w-25 mt-3">
                 <label for="password">Password</label>
-                <input type="password" class="form-control" id="mot_de_passe" name="mdpInput" placeholder="Password"
-                    v-model="password">
+                <input 
+                    type="password" 
+                    class="form-control" 
+                    id="mot_de_passe" 
+                    name="mdpInput" 
+                    placeholder="Password"
+                    v-model="password"
+                >
             </div>
 
             <div class="d-flex justify-content-around w-25 mt-3">
                 <div>
-                    <button type="submit" class="btn btn-primary">Connexion</button>
-
+                    <button type="button" class="btn btn-primary" @click="login">Connexion</button>
                 </div>
 
                 <div class="form-check d-grid">
