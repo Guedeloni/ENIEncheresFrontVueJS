@@ -1,7 +1,6 @@
-<script>
-export default {
-    name: "Profil"
-}
+<script setup>
+import { ref } from 'vue';
+
 </script>
 
 <template>
@@ -10,14 +9,14 @@ export default {
 
         <h2 class="mt-3 mb-3">Mon profil</h2>
 
-        <div class="mb-3"><span class="text-secondary">Pseudo :</span> ${utilisateur.pseudo }</div>
-        <div class="mb-3"><span class="text-secondary">Nom :</span> ${utilisateur.nom }</div>
-        <div class="mb-3"><span class="text-secondary">Prénom :</span> ${utilisateur. prenom }</div>
-        <div class="mb-3"><span class="text-secondary">Email :</span> ${utilisateur.email }</div>
-        <div class="mb-3"><span class="text-secondary">Telèphone :</span> ${utilisateur.telephone }</div>
-        <div class="mb-3"><span class="text-secondary">Rue :</span> ${utilisateur.rue }</div>
-        <div class="mb-3"><span class="text-secondary">Code postal :</span> ${utilisateur.code_postal }</div>
-        <div class="mb-3"><span class="text-secondary">Ville :</span> ${utilisateur. ville}</div>
+        <div class="mb-3"><span class="text-secondary">Pseudo :</span> {{ utilisateur.pseudo }}</div>
+        <div class="mb-3"><span class="text-secondary">Nom :</span> {{ utilisateur.nom }}</div>
+        <div class="mb-3"><span class="text-secondary">Prénom :</span> {{ utilisateur.prenom }}</div>
+        <div class="mb-3"><span class="text-secondary">Email :</span> {{ utilisateur.email }}</div>
+        <div class="mb-3"><span class="text-secondary">Telèphone :</span> {{ utilisateur.telephone }}</div>
+        <div class="mb-3"><span class="text-secondary">Rue :</span> {{ utilisateur.rue }}</div>
+        <div class="mb-3"><span class="text-secondary">Code postal :</span> {{ utilisateur.code_postal }}</div>
+        <div class="mb-3"><span class="text-secondary">Ville :</span> {{ utilisateur.ville }}</div>
 
 
         <div class="contenu">

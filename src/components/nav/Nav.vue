@@ -24,7 +24,7 @@ export default {
 
                     <li class="nav-item"><a class="nav-link active" aria-current="page"
                             href="/inscription">S'inscrire</a></li>
-                    <li class="nav-item"><a class="nav-link" href="login">Se connecter</a>
+                    <li class="nav-item"><a class="nav-link" href="/login">Se connecter</a>
                     </li>
                 </ul>
             </div>
@@ -39,7 +39,7 @@ export default {
                             href="/ ">Enchères</a></li>
                     <li class="nav-item"><a class="nav-link" href="vente-article">Vendre
                             un article</a></li>
-                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="profil">Mon
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="/profil">Mon
                             profil</a></li>
                     <li class="nav-item"><a class="nav-link" href="/">Déconnexion</a></li>
 

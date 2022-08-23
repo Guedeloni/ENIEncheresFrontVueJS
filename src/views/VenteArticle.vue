@@ -15,7 +15,7 @@ export default {
                 <div>
                     <div class="form-group">
                         <label for="article">Article : </label> <input type="text" class="form-control" id="article"
-                            aria-describedby="article" name="nom_article" value="${param.article}">
+                            aria-describedby="article" name="nom_article" value={{param.article}}>
                     </div>
 
                     <div class="mb-3">
@@ -27,12 +27,12 @@ export default {
                     <div class="input-group mb-3 p-3">
                         <label class="input-group-text" for="inputGroupSelect01">Catégories</label>
                         <select class="form-select" id="catégories" name="no_categorie">
-                            <c:if test="${ ! empty listeCategorie }">
+                            <!-- <c:if test="${ ! empty listeCategorie }"> -->
                                 <option selected>Toutes</option>
                                 <!-- <c:forEach var="categorie" items="${ listeCategorie }">
                                     <option value="${categorie.no_categorie }">${categorie.libelle }</option>
                                 </c:forEach> -->
-                            </c:if>
+                            <!-- </c:if> -->
                         </select>
 
                     </div>
