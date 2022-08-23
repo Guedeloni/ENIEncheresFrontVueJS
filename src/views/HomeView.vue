@@ -1,15 +1,32 @@
 <script setup>
-import { ref } from 'vue'; // data()
+import { ref, onMounted } from 'vue'; // data()
 
 const type = ref("achats");
 const filtres = ref([]);
 const options = ref([])
+const listeArticles = ref([])
+
+onMounted(() => {
+  // on délègue le traitement dans un autre méthode qui va être appelée également après l'ajout du genre
+  loadArticles();
+})
+
+
 // faire un onclick mettre à zéro les ref
 function recharger() {
-
   // faire un GET sur l' api
   filtres.value = []
+}
 
+async function loadArticles() {
+  // 1 - requête d'API avec axios pour recupérer les genres 
+  // (le prefixe "http://localhost:8080/api/") a déjà été défini dans main.js
+  const result = await axios.get("articles");
+  console.log("articles api", result);
+
+  // 2- Mettre à jour le modèle
+  // pour mettre à jour une variable de notre modèle initialisée avec ref(), il faut utiliser .value
+  listeArticles.value = result.data; // ne pas oublier .data (équivalent de data.json() avec fetch)
 }
 
 
@@ -45,7 +62,8 @@ function recharger() {
     </div>
 
     <!-- si l'utilisateur est connecté on affiche les champs Achats et Ventes  -->
-    <div v-if="utilisateur">
+    <!-- TODO  -->
+    <!-- <div v-if="utilisateur"> --> 
 
       <div class="d-flex justify-content-around w-50 pb-4">
 
@@ -115,29 +133,30 @@ function recharger() {
         </c:choose> -->
         </div>
       </div>
+    <!-- </div> -->
 
-      <div class="d-flex justify-content-around">
-        <div v-if="article">
-          <div v-for="article in listeArticles" :key="article.id">
+    <!-- Affichage liste article -->
+    <div class="d-flex justify-content-around">
+      <div v-for="article in listeArticles" :key="article.id">
 
-          </div>
-          <div class="card" style="width: 18rem;">
-            <div class="card-body ">
+        <div class="card" style="width: 18rem;">
+          <div class="card-body ">
 
-              <img class="card-img-top" :src="article.image_article" :alt="article.nom_article">
-              <h5 class="card-title mt-2">{{ article.nom_article }}</h5>
-              <div>Prix : {{ article.prix_initial }} points</div>
-              <p class="card-text">Fin de l'enchère :
-                {{ article.date_fin_encheres }}</p>
+            <!-- <img class="card-img-top" :src="article.image_article" :alt="article.nomArticle"> -->
+            <h5 class="card-title mt-2">{{ article.nomArticle }}</h5>
+            <div>Prix : {{ article.prixInitial }} points</div>
+            <p class="card-text">Fin de l'enchère :
+              {{ article.dateFinEncheres }}</p>
 
-              <!-- TODO => créer un article avec un utilisateur pour pouvoir récupérer le pseudo sinon null -->
-              <p class="card-text">Vendeur : {{ article.utilisateur.pseudo }}</p>
+            <!-- TODO => créer un article avec un utilisateur pour pouvoir récupérer le pseudo sinon null -->
+            <!-- <p class="card-text">Vendeur : {{ article.utilisateur.pseudo }}</p> -->
 
-            </div>
           </div>
         </div>
       </div>
     </div>
 
   </div>
+
+
 </template>
