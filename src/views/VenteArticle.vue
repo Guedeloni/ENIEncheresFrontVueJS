@@ -16,8 +16,7 @@ const rue               = ref("");
 const code_postal       = ref("");
 const ville             = ref("");
 
-const userConnecte      = ref();
-
+const errorMessage      = ref("");
 
 onMounted(() => {
     loadCategorie();
@@ -30,20 +29,22 @@ async function loadCategorie() {
 
 async function addArticle() {
     const body = {
-        nom_article:    nom_article.value,
-        description:    description.value,
-        categorie:      categorie.value,
-        listeCategorie: listeCategorie.value,
-        photoArticle:   photoArticle.value,
-        prix_vente:     prix_vente.value,
-        date_debut:     date_debut.value,
-        date_fin:       date_fin.value,
-        rue:            rue.value,
-        code_postal:    code_postal.value,
-        ville:          ville.value,
+        nomArticle:         nom_article.value,
+        description:        description.value,
+        categorie:          categorie.value,
+        imageURL:           photoArticle.value,
+        prixInitial:        prix_initial.value,
+        dateDebutEncheres:  date_debut.value,
+        dateFinEncheres:    date_fin.value
     }
-    await axios.post("articles/", body);
-
+    await axios.post("articles", body)
+                .catch(function (error) {
+                    console.log(error.response);
+                    if (error.response && error.response.data && error.response.data.message) {
+                        errorMessage.value = error.response.data.message;
+                    }
+                });
+    this.$router.push("/")
 }
 
 </script>
@@ -86,8 +87,8 @@ async function addArticle() {
 
                     <!-- MISE A PRIX -->
                     <div class="form-group mb-3">
-                        <label for="prix_vente">Mise à prix : </label>
-                        <input type="number" class="form-control" id="prix_vente" v-model="prix_vente"/>
+                        <label for="prix_initial">Mise à prix : </label>
+                        <input type="number" class="form-control" id="prix_initial" v-model="prix_initial"/>
                     </div>
 
                     <!-- DATE DEBUT ENCHERE-->
@@ -136,6 +137,8 @@ async function addArticle() {
             </div>
 
         </form>
+
+        <p>{{ errorMessage }}</p>
 
     </div>
 </template>
