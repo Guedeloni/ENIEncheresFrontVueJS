@@ -30,15 +30,20 @@ const router = createRouter({
       component: () => import("@/views/Profil.vue"),
     },
     {
-      path: "/categories",
-      name: "categories",
-      component: () => import("@/views/Categorie.vue"),
-    },
-    // Redirect 404
-    {
       path: "/admin",
       name: "admin",
       component: () => import("@/views/Admin.vue"),
+    },
+    {
+      path: "/articles/:id",
+      name: "ArticleById",
+      props: true,
+      component: () => import("@/views/ArticleById.vue"),
+    },
+    {
+      path: "/categories",
+      name: "categories",
+      component: () => import("@/views/Categorie.vue"),
     },
     // Redirect 404
     {
