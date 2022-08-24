@@ -29,17 +29,22 @@ const router = createRouter({
       name: "profil",
       component: () => import("@/views/Profil.vue"),
     },
+    {
+      path: "/articles/:id",
+      name: "ArticleById",
+      props: true,
+      component: () => import("@/views/ArticleById.vue"),
+    },
+    {
+      path: "/categories",
+      name: "categories",
+      component: () => import("@/views/Categorie.vue"),
+    },
     // Redirect 404
     {
       path: "/:pathMatch(.*)*",
       name: "NotFound",
       component: () => import("@/views/NotFound.vue"),
-    },
-
-    {
-      path: "/categories",
-      name: "categories",
-      component: () => import("@/views/Categorie.vue"),
     },
   ],
 });
