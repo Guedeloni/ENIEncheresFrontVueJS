@@ -29,6 +29,7 @@ async function login() {
     <div class="container-md">
 
         <div><span>{{messageConfirmation}}</span></div>
+        <div><span>{{pseudo}}</span></div>
 
         <form method="post" action="">
             <div class="form-group w-25">
@@ -49,7 +50,7 @@ async function login() {
                 <input 
                     type="password" 
                     class="form-control" 
-                    id="mot_de_passe" 
+                    id="motDePasse" 
                     name="mdpInput" 
                     placeholder="Password"
                     v-model="password"
