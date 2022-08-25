@@ -1,7 +1,7 @@
-<script>
-export default {
-  name: "Nav",
-};
+<script setup>
+
+const props = defineProps([pseudo])
+
 </script>
 
 <template>
@@ -54,6 +54,10 @@ export default {
 
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="/admin">Admin</a>
+          </li>
+
+          <li>
+            <p>Pseudo : {{pseudo}}</p>
           </li>
 
         </ul>
