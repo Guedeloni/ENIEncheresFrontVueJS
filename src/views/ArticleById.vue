@@ -12,15 +12,24 @@ const montantEnchere = ref();
 
 onMounted(() => {
   loadArticles();
+  loadEnchere();
 });
 
 async function loadArticles() {
-  //   const result = await axios.get(`articles/${id}`);
   const result = await axios.get(`articles/${props.id}`);
-  //const result = await axios.get("articles/" + id);
+
   console.log("articles api", result);
 
   article.value = result.data;
+}
+
+async function loadEnchere() {
+  const result = await axios.get(`encheres/${props.id}`);
+
+  console.log("encheress api", result);
+
+  enchere.value = result.data;
+  
 }
 
 async function addEnchere() {
@@ -51,7 +60,7 @@ async function addEnchere() {
     <div class="card-body">
       <h5 class="card-title mt-2">{{ article.nomArticle }}</h5>
       <div>Description : {{ article.description }}</div>
-      <!-- <div>Meilleur : </div> -->
+      <div>Meilleur offre :{{ enchere.montantEnchere }}</div>
 
       <div>Mise à prix : {{ article.prixInitial }}</div>
       <div>Fin de l'enchère : {{ article.dateFinEncheres }}</div>
