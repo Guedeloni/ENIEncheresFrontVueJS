@@ -21,7 +21,7 @@ async function loadArticles() {
   // 1 - requête d'API avec axios pour recupérer les genres
   // (le prefixe "http://localhost:8080/api/") a déjà été défini dans main.js
   const result = await axios.get("articles");
-  console.log("articles api", result);
+ // console.log("articles api", result);
 
   // 2- Mettre à jour le modèle
   // pour mettre à jour une variable de notre modèle initialisée avec ref(), il faut utiliser .value
