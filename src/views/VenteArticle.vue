@@ -1,9 +1,10 @@
 <script setup>
-// export default {
-//     name: "VenteArticle"
-// }
 
-import { onMounted, ref } from 'vue'
+import { onMounted, ref }   from 'vue';
+import { useRouter }        from "vue-router";
+
+const router            = useRouter();
+
 const nom_article       = ref("");
 const description       = ref("");
 const categorie         = ref();
@@ -44,13 +45,15 @@ async function addArticle() {
         }
     }
     await axios.post("articles", body)
+                .then(response => {
+                    router.push('/')
+                })
                 .catch(function (error) {
                     console.log(error.response);
                     if (error.response && error.response.data && error.response.data.message) {
                         errorMessage.value = error.response.data.message;
                     }
                 });
-    this.$router.push("/")
 }
 
 </script>
