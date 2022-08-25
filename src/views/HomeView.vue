@@ -27,13 +27,6 @@ async function loadArticles() {
   // pour mettre à jour une variable de notre modèle initialisée avec ref(), il faut utiliser .value
   listeArticles.value = result.data; // ne pas oublier .data (équivalent de data.json() avec fetch)
 }
-
-function getArticleById(article) {
-  this.$router.push({
-    name: "ArticleById",
-    params: { id: article.id },
-  });
-}
 </script>
 
 <template>
@@ -210,7 +203,7 @@ function getArticleById(article) {
               Fin de l'enchère : {{ article.dateFinEncheres }}
             </p>
 
-            <a @click="ArticleById(article)">details</a>
+            <!-- <a @click="ArticleById(article)">details</a> -->
             <router-link :to="`/articles/${article.noArticle}`"
               >Detail Article</router-link
             >
