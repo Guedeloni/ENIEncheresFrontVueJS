@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 
 const pseudo = ref("")
+
 const password = ref("")
 const messageConfirmation = ref("")
 
@@ -13,6 +14,7 @@ async function login() {
     }
     // On envoie une requête POST sur l'url BASE_URL + “login" avec les données définies plus haut
     const result = await axios.post("login", body);
+    console.log(result);
 
     localStorage.setItem('jwt', result.data);
 

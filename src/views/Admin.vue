@@ -19,20 +19,8 @@ async function getUSers() {
     listeUtilisateurs.value = result.data;
 }
 
-
-// async function deleteUser(id) {
-//     utilisateur.filter(
-//         (utilisateur) => utilisateur.id === id
-//     );
-
-//     const deleteById = await axios.delete("utilisateur", id);
-// };
-
 function deleteUser(id) {
     axios.delete("utilisateurs/" + id)
-    
-    //const del = axios.delete("utilisateurs/" + id)
-    //console.log(del);
 }
 
 </script>
