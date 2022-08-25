@@ -29,11 +29,7 @@ async function getUSers() {
 // };
 
 function deleteUser(id) {
-    axios.delete("utilisateurs/" + id, {
-        headers: {
-          authorization: localStorage.token
-        }
-    })
+    axios.delete("utilisateurs/" + id)
     
     //const del = axios.delete("utilisateurs/" + id)
     //console.log(del);
@@ -48,7 +44,7 @@ function deleteUser(id) {
                 <div class="card-body ">
                     <h5 class="card-title mt-2">{{ utilisateur.pseudo }}</h5>
                     <form method="post">
-                        <button type="button" class="btn-close" aria-label="Close" @click="deleteUser(id)"></button>
+                        <button type="button" class="btn-close" aria-label="Close" @click="deleteUser(utilisateur.id)"></button>
                     </form>
                 </div>
             </div>

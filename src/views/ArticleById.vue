@@ -17,12 +17,13 @@ async function loadArticles() {
   //const result = await axios.get("articles/" + id);
   console.log("articles api", result);
 
-  article.value = result.data; // ne pas oublier .data (équivalent de data.json() avec fetch)
+  article.value = result.data;
 }
 </script>
 
 <template>
-  <div class="card" style="width: 18rem">
+  <h1>Details Ventes</h1>
+  <div class="card" style="width: 500rem; height: 18rem">
     <div class="card-body">
       <h5 class="card-title mt-2">{{ article.nomArticle }}</h5>
       <div>Description : {{ article.description }}</div>
@@ -30,7 +31,7 @@ async function loadArticles() {
       <div>Mise à prix : {{ article.prixInitial }}</div>
       <div>Fin de l'enchère : {{ article.dateFinEncheres }}</div>
       <div>Retrait : {{ article.retrait }}</div>
-      <!---<div>Vendeur : {{ Utilisateur.vendeur }}</div>-->
+      <div v-if="article.vendeur">Vendeur : {{ article.vendeur.pseudo }}</div>
 
       <div></div>
     </div>
