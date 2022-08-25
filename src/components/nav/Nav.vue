@@ -1,6 +1,6 @@
 <script setup>
 
-const props = defineProps([pseudo])
+const props = defineProps(["pseudo"])
 
 </script>
 
