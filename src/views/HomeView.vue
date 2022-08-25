@@ -21,18 +21,10 @@ async function loadArticles() {
   // 1 - requête d'API avec axios pour recupérer les genres
   // (le prefixe "http://localhost:8080/api/") a déjà été défini dans main.js
   const result = await axios.get("articles");
- // console.log("articles api", result);
 
   // 2- Mettre à jour le modèle
   // pour mettre à jour une variable de notre modèle initialisée avec ref(), il faut utiliser .value
   listeArticles.value = result.data; // ne pas oublier .data (équivalent de data.json() avec fetch)
-}
-
-function getArticleById(article) {
-  this.$router.push({
-    name: "ArticleById",
-    params: { id: article.id },
-  });
 }
 </script>
 
@@ -210,10 +202,8 @@ function getArticleById(article) {
               Fin de l'enchère : {{ article.dateFinEncheres }}
             </p>
 
-            <a @click="ArticleById(article)">details</a>
-            <router-link :to="`/articles/${article.noArticle}`"
-              >Detail Article</router-link
-            >
+            <router-link :to="`/articles/${article.noArticle}`">Detail Article
+            </router-link>
 
             <!-- TODO => créer un article avec un utilisateur pour pouvoir récupérer le pseudo sinon null -->
             <!-- <p class="card-text">Vendeur : {{ article.utilisateur.pseudo }}</p> -->

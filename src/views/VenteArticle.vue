@@ -1,15 +1,16 @@
 <script setup>
-// export default {
-//     name: "VenteArticle"
-// }
 
-import { onMounted, ref } from 'vue'
+import { onMounted, ref }   from 'vue';
+import { useRouter }        from "vue-router";
+
+const router            = useRouter();
+
 const nom_article       = ref("");
 const description       = ref("");
 const categorie         = ref();
 const listeCategorie    = ref([]);
-const photoArticle      = ref("");
-const prix_vente        = ref();
+const photo_article     = ref("");
+const prix_initial      = ref();
 const date_debut        = ref("");
 const date_fin          = ref("");
 const rue               = ref("");
@@ -28,23 +29,31 @@ async function loadCategorie() {
 }
 
 async function addArticle() {
+  
     const body = {
         nomArticle:         nom_article.value,
         description:        description.value,
         categorie:          categorie.value,
-        imageURL:           photoArticle.value,
+        imageURL:           photo_article.value,
         prixInitial:        prix_initial.value,
         dateDebutEncheres:  date_debut.value,
-        dateFinEncheres:    date_fin.value
+        dateFinEncheres:    date_fin.value,
+        retrait:            {
+            rue:        rue.value,
+            codePostal: code_postal.value,
+            ville:      ville.value,
+        }
     }
     await axios.post("articles", body)
+                .then(response => {
+                    router.push('/')
+                })
                 .catch(function (error) {
                     console.log(error.response);
                     if (error.response && error.response.data && error.response.data.message) {
                         errorMessage.value = error.response.data.message;
                     }
                 });
-    this.$router.push("/")
 }
 
 </script>
@@ -54,7 +63,7 @@ async function addArticle() {
 
         <h2>Nouvelle vente</h2>
 
-        <form method="post" action="">
+        <form>
 
             <div class="d-flex justify-content-around align-items-center w-50 p-3">
                 <div>
@@ -81,8 +90,8 @@ async function addArticle() {
 
                     <!-- IMAGE -->
                     <div class="form-group mb-3">
-                        <label for="photoArticle">Lien vers image de l'article :</label>
-                        <input type="text" class="form-control" id="photoArticle" v-model="photoArticle">
+                        <label for="photo_article">Lien vers image de l'article :</label>
+                        <input type="text" class="form-control" id="photo_article" v-model="photo_article">
                     </div>
 
                     <!-- MISE A PRIX -->

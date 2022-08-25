@@ -18,7 +18,8 @@ async function addCategorie() {
     libelle: libelle.value,
   };
 
-  await axios.post("categories", body).catch(function (error) {
+  await axios.post("categories", body)
+  .catch(function (error) {
     console.log(error.response);
     if (error.response && error.response.data && error.response.data.message) {
       errorMessage.value = error.response.data.message; // coresspond au message de la requet http

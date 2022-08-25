@@ -1,4 +1,5 @@
 <script setup>
+
 import { ref, onMounted } from "vue";
 
 const currentUser = ref({});
@@ -16,6 +17,7 @@ async function loadCurrentUser() {
     });
   currentUser.value = result.data;
 }
+
 </script>
 
 <template>
@@ -74,6 +76,7 @@ async function loadCurrentUser() {
 
           </ul>
         </div>
+
       </div>
 
     </div>
