@@ -20,7 +20,13 @@ onMounted(() => {
 });
 
 async function loadArticles() {
-  const result = await axios.get(`articles/${props.id}`);
+  const result = await axios.get(`articles/${props.id}`)
+    .catch(function (error) {
+      console.log(error.response);
+      if (error.response && error.response.data && error.response.data.message) {
+        errorMessage.value = error.response.data.message;
+      }
+    });
   console.log("articles api", result);
   article.value = result.data;
   montantEnchere = "";

@@ -1,41 +1,157 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from "vue"
+
+const props = defineProps(
+    [
+        "id",
+        "pseudo",
+        "nom",
+        "prenom",
+        "email",
+        "telephone",
+        "rue",
+        "codePostal",
+        "ville",
+        "credit",
+        "image"
+    ])
+
+const utilisateur = ref("");
+const type = ref("achats");
+const filtres = ref([]);
+
+onMounted(() => {
+    getUSerById();
+});
+
+async function getUSerById() {
+    const result = await axios.get(`utilisateurs/${props.id}`)
+        .catch(function (error) {
+            console.log(error.response);
+            if (error.response && error.response.data && error.response.data.message) {
+                errorMessage.value = error.response.data.message;
+            }
+        });
+
+    // console.log("profil user", result)
+    utilisateur.value = result.data;
+}
+
+function recharger() {
+    filtres.value = [];
+}
 
 </script>
 
 <template>
-    <div class="container-md w-75 text-center">
-        <!-- <c:if test="${ request.getSession(false) != null }">  -->
+    <div class="container-md w-75 text-center profil">
 
         <h2 class="mt-3 mb-3">Mon profil</h2>
 
-        <div class="mb-3"><span class="text-secondary">Pseudo :</span> {{ utilisateur.pseudo }}</div>
-        <div class="mb-3"><span class="text-secondary">Nom :</span> {{ utilisateur.nom }}</div>
-        <div class="mb-3"><span class="text-secondary">Prénom :</span> {{ utilisateur.prenom }}</div>
-        <div class="mb-3"><span class="text-secondary">Email :</span> {{ utilisateur.email }}</div>
-        <div class="mb-3"><span class="text-secondary">Telèphone :</span> {{ utilisateur.telephone }}</div>
-        <div class="mb-3"><span class="text-secondary">Rue :</span> {{ utilisateur.rue }}</div>
-        <div class="mb-3"><span class="text-secondary">Code postal :</span> {{ utilisateur.code_postal }}</div>
-        <div class="mb-3"><span class="text-secondary">Ville :</span> {{ utilisateur.ville }}</div>
+        <div v-if="utilisateur">
+            <div class="card" style="width: 25rem;">
+                <img :src="utilisateur.image" class="card-img-top" :alt="utilisateur.pseudo">
+                <div class="card-body">
+                    <h5 class="card-title">{{ utilisateur.pseudo }}</h5>
+                    <p class="card-text">
+                    <div class="mb-3"><span class="text-secondary">Nom :</span> {{ utilisateur.nom }}</div>
+                    <div class="mb-3"><span class="text-secondary">Prénom :</span> {{ utilisateur.prenom }}</div>
+                    <div class="mb-3"><span class="text-secondary">Email :</span> {{ utilisateur.email }}</div>
+                    <div class="mb-3"><span class="text-secondary">Telèphone :</span> {{ utilisateur.telephone }}</div>
+                    <div class="mb-3"><span class="text-secondary">Rue :</span> {{ utilisateur.rue }}</div>
+                    <div class="mb-3"><span class="text-secondary">Code postal :</span> {{ utilisateur.code_postal }}
+                    </div>
+                    <div class="mb-3"><span class="text-secondary">Ville :</span> {{ utilisateur.ville }}</div>
+                    <div class="mb-3"><span class="text-secondary">Crédit: {{ utilisateur.credit }}</span></div>
+                    </p>
 
-
-        <div class="contenu">
-            <a href="/modif_profil"> <input type="submit" value="Modifier" class="btn btn-primary" />
-            </a>
+                    <a href="/modif_profil"> <input type="submit" value="Modifier" class="btn btn-primary" />
+                    </a>
+                </div>
+            </div>
         </div>
 
-    </div>
-    <!-- </c:if>  -->
+        <div class="d-flex justify-content-around w-50 pb-4">
+            <div>
+                <div>
+                    <input type="radio" id="achats" value="achats" v-model="type" @click="recharger" />
+                    <label for="achats">Achats</label>
+                </div>
 
-    <!-- <c:if test="${ request.getSession(false) = null }"> -->
-    <h1>Pas de session en cours</h1>
-    <div class="contenu">
-        <a href="/encheres">
-            <input type="submit" value="Retour à l'accueil" />
-        </a>
+                <div class="ms-5">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="encheres_ouvertes" id="encheres_ouvertes"
+                            v-model="filtres" :disabled="type == 'ventes'" />
+                        <label class="form-check-label" for="encheres_ouvertes">
+                            enchères ouvertes
+                        </label>
+                    </div>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="encheres_en_cours" id="encheres_en_cours"
+                            v-model="filtres" :disabled="type == 'ventes'" />
+                        <label class="form-check-label" for="encheres_en_cours">
+                            Mes enchères en cours
+                        </label>
+                    </div>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="encheres_remporte" id="encheres_remporte"
+                            v-model="filtres" :disabled="type == 'ventes'" />
+                        <label class="form-check-label" for="encheres_remporte">
+                            Mes enchères remportées
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div>
+                    <!-- v-model le même entre achat et vente -->
+                    <input type="radio" id="ventes" value="ventes" v-model="type" @click="recharger" />
+                    <label for="ventes">Mes Ventes</label>
+                </div>
+
+                <div class="ms-5">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="ventes_en_cours" id="ventes_en_cours"
+                            v-model="filtres" :disabled="type == 'achats'" />
+                        <label class="form-check-label" for="ventes_en_cours">
+                            mes ventes en cours
+                        </label>
+                    </div>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="ventes_non_debute" id="ventes_non_debute"
+                            v-model="filtres" :disabled="type == 'achats'" />
+                        <label class="form-check-label" for="ventes_non_debute">
+                            ventes non débutées
+                        </label>
+                    </div>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="ventes_termine" id="ventes_termine"
+                            v-model="filtres" :disabled="type == 'achats'" />
+                        <label class="form-check-label" for="ventes_termine">
+                            ventes terminées
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <!-- </c:if>  -->
 </template>
 
 <style scoped>
+.profil {
+    display: grid;
+    justify-content: center;
+}
+.card {
+    margin-bottom: 2rem;
+}
+
+.session {
+    margin-top: 2rem;
+}
 </style>
