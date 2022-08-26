@@ -65,9 +65,14 @@ function deconnexion() {
               <a class="nav-link active" aria-current="page" href="/categories">Categories</a>
             </li>
 
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="/admin">Admin</a>
-            </li>
+            <!-- Si l' utilisateur est ADMIN !  -->
+            <div v-if="currentUser.admin">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="/admin">Admin</a>
+              </li>
+            </div>
+
+            <!------------------------------------->
 
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="/profil">Mon profil <span class="login">{{
