@@ -1,8 +1,6 @@
 <script setup>
 import { ref, onMounted } from "vue"; // data()
 
-const type = ref("achats");
-const filtres = ref([]);
 const options = ref([]);
 const listeArticles = ref([]);
 
@@ -10,12 +8,6 @@ onMounted(() => {
   // on délègue le traitement dans un autre méthode qui va être appelée également après l'ajout du genre
   loadArticles();
 });
-
-// faire un onclick mettre à zéro les ref
-function recharger() {
-  // faire un GET sur l' api
-  filtres.value = [];
-}
 
 async function loadArticles() {
   // 1 - requête d'API avec axios pour recupérer les genres

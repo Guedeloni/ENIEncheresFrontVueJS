@@ -13,27 +13,36 @@ const password = ref("")
 const confirmPassword = ref("")
 const messageError = ref("")
 const messageConfirmation = ref("")
+// const messageErrorInscription = ref("")
 
 async function signup() {
 
-     if(password.value !== confirmPassword.value ){
-        messageError.value="mot de passe différent !"
+    if (password.value !== confirmPassword.value) {
+        messageError.value = "mot de passe différent !"
         return null;
     }
-   
+
     const body = {
         pseudo: pseudo.value,
         prenom: prenom.value,
         nom: nom.value,
-        email:email.value,
-        telephone:telephone.value,
+        email: email.value,
+        telephone: telephone.value,
         rue: rue.value,
         codePostal: codePostal.value,
         ville: ville.value,
         motDePasse: password.value
     }
-   
-    const result = await axios.post("inscription", body);
+
+    const result = await axios.post("inscription", body)
+        .catch(function (error) {
+            console.log(error.response);
+            if (error.response &&
+                error.response.data
+            ) {
+                messageError.value = error.response.data.message;
+            }
+        });
 
     localStorage.setItem('jwt', result.data);
 
@@ -65,131 +74,67 @@ async function signup() {
                 <div class="d-flex justify-content-around align-items-center w-50 p-3">
                     <div>
                         <div class="form-group">
-                            <label for="Pseudo">Pseudo</label> 
-                            <input 
-                                type="text" 
-                                class="form-control" 
-                                id="pseudo"
-                                aria-describedby="pseudo" 
-                                placeholder="votre pseudo" 
-                                name="pseudo"
-                                v-model="pseudo"
-                            >
+                            <label for="Pseudo">Pseudo</label>
+                            <input type="text" class="form-control" id="pseudo" aria-describedby="pseudo"
+                                placeholder="votre pseudo" name="pseudo" v-model="pseudo" required>
                         </div>
 
                         <div class="form-group mt-3">
                             <label for="nom">Nom</label>
-                             <input 
-                                type="text" 
-                                class="form-control" 
-                                id="nom"
-                                aria-describedby="nom" 
-                                placeholder="Doe" 
-                                name="nom"
-                                v-model="nom"
-                            >
+                            <input type="text" class="form-control" id="nom" aria-describedby="nom" placeholder="Doe"
+                                name="nom" v-model="nom" required>
                         </div>
 
                         <div class="form-group mt-3">
                             <label for="prénom">Prénom</label>
-                             <input 
-                                type="text" 
-                                class="form-control" 
-                                id="prenom"
-                                aria-describedby="prenom" 
-                                placeholder="John" 
-                                name="prenom"
-                                v-model="prenom"
-                            > 
+                            <input type="text" class="form-control" id="prenom" aria-describedby="prenom"
+                                placeholder="John" name="prenom" v-model="prenom" required>
                         </div>
 
                         <div class="form-group mt-3">
-                            <label for="email">Email</label> 
-                            <input 
-                                type="email" 
-                                class="form-control" 
-                                id="email"
-                                aria-describedby="email" 
-                                placeholder="john-doe@gmail.com" 
-                                name="email"
-                                v-model="email"
-                            >
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="email" aria-describedby="email"
+                                placeholder="john-doe@gmail.com" name="email" v-model="email" required>
                         </div>
 
                         <div class="form-group mt-3">
-                            <label for="telephone">Téléphone</label> 
-                            <input 
-                                type="text" 
-                                class="form-control"
-                                id="telephone" 
-                                aria-describedby="telephone" 
-                                placeholder="06 12 39 84 52"
-                                name="telephone" 
-                                v-model="telephone"
-                            >
+                            <label for="telephone">Téléphone</label>
+                            <input type="text" class="form-control" id="telephone" aria-describedby="telephone"
+                                placeholder="06 12 39 84 52" name="telephone" v-model="telephone" required>
                         </div>
 
                         <div class="form-group mt-3">
-                            <label for="rue">Rue</label> 
-                            <input 
-                                type="text" 
-                                class="form-control" 
-                                id="rue"
-                                placeholder="12 rue de l'Eni" 
-                                name="rue" 
-                                v-model="rue"
-                            >
+                            <label for="rue">Rue</label>
+                            <input type="text" class="form-control" id="rue" placeholder="12 rue de l'Eni" name="rue"
+                                v-model="rue" required>
                         </div>
                     </div>
 
                     <div class="mt-3">
                         <div class="form-group mt-3">
-                            <label for="codePostal">Code postal</label> 
-                            <input 
-                                type="text" 
-                                class="form-control"
-                                id="codePostal" 
-                                placeholder="44000" 
-                                name="codePostal" 
-                                v-model="codePostal"
-                            >
+                            <label for="codePostal">Code postal</label>
+                            <input type="text" class="form-control" id="codePostal" placeholder="44000"
+                                name="codePostal" v-model="codePostal" required>
                         </div>
 
                         <div class="form-group mt-3">
-                            <label for="ville">Ville</label> 
-                            <input 
-                                type="text" 
-                                class="form-control" 
-                                id="ville"
-                                placeholder="Nantes" 
-                                name="ville" 
-                                v-model="ville"
-                            >
+                            <label for="ville">Ville</label>
+                            <input type="text" class="form-control" id="ville" placeholder="Nantes" name="ville"
+                                v-model="ville" required>
                         </div>
 
                         <div class="form-group mt-3">
-                            <label for="Mot de passe actuel">Mot de passe</label> 
-                            <input 
-                                type="password"
-                                class="form-control" 
-                                id="motDePasse" 
-                                name="motDePasse"
-                                v-model="password"
-                            >
+                            <label for="Mot de passe actuel">Mot de passe</label>
+                            <input type="password" class="form-control" id="motDePasse" name="motDePasse"
+                                v-model="password" required>
                         </div>
 
                         <div class="form-group mt-3">
                             <label for="confirmation mot de passe">Confirmation</label>
-                             <input 
-                                type="password"
-                                class="form-control" 
-                                id="confirmPassword" 
-                                name="confirmPassword"
-                                v-model="confirmPassword"
-                            >
+                            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
+                                v-model="confirmPassword" required>
                         </div>
                     </div>
-
                 </div>
 
                 <div class="d-flex justify-content-around w-25 mt-3">
@@ -200,7 +145,7 @@ async function signup() {
 
                     <div>
                         <a href="/">
-                        <button type="submit" class="btn btn-primary">Annuler</button>
+                            <button type="submit" class="btn btn-primary">Annuler</button>
                         </a>
                     </div>
                 </div>
@@ -208,11 +153,13 @@ async function signup() {
             </form>
 
             <div class="d-flex justify-content-around text-success fs-5 fw-bold w-50 my-3">
-                {{messageConfirmation}}
+                {{ messageConfirmation }}
             </div>
 
             <div class="d-flex justify-content-around text-danger fs-5 fw-bold w-50 my-3">
-                {{messageError}}
+                <!-- Mot de passe OU tous les champs sont requis -->
+                {{ messageError }}
+
             </div>
 
         </div>
