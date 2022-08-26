@@ -13,7 +13,7 @@ const props = defineProps(
         "codePostal",
         "ville",
         "credit",
-        "image"
+        "avatar"
     ])
 
 const utilisateur = ref("");
@@ -50,7 +50,7 @@ function recharger() {
 
         <div v-if="utilisateur">
             <div class="card" style="width: 25rem;">
-                <img :src="utilisateur.image" class="card-img-top" :alt="utilisateur.pseudo">
+                <img :src="utilisateur.avatar" class="card-img-top" :alt="utilisateur.pseudo">
                 <div class="card-body">
                     <h5 class="card-title">{{ utilisateur.pseudo }}</h5>
                     <p class="card-text">
