@@ -23,7 +23,7 @@ async function loadArticles() {
         errorMessage.value = error.response.data.message;
       }
     });
-    
+
   console.log("articles api", result);
   article.value = result.data;
 }
@@ -42,6 +42,7 @@ async function addEnchere() {
     Dateenchere: dateEnchere.value,
     montantEnchere: montantEnchere.value,
   };
+
   const result = await axios
     .post(`encheres/${props.id}`, body)
     .catch(function (error) {
@@ -66,10 +67,19 @@ async function addEnchere() {
       <h5 class="card-title mt-2">{{ article.nomArticle }}</h5>
       <div>Description : {{ article.description }}</div>
       <div>Meilleur offre :{{ enchere.montantEnchere }}</div>
-
       <div>Mise à prix : {{ article.prixInitial }}</div>
       <div>Fin de l'enchère : {{ article.dateFinEncheres }}</div>
-      <div>Retrait : {{ article.retrait }}</div>
+
+      <!-- ********************* RETRAIT ************************* -->
+      <div v-if="retrait">
+        <div class="retrait">
+          <div>Retrait : {{ article.retrait.rue }}</div>
+          <p>{{ article.retrait.codePostal }} - {{ article.retrait.ville }}</p>
+        </div>
+      </div>
+
+       <!-- ****************************************************** -->
+
       <div v-if="article.vendeur">Vendeur : {{ article.vendeur.pseudo }}</div>
       <div class="input-group">
         <input type="number" class="form-control" aria-label="Points amount (with dot and two decimal places)"
@@ -80,3 +90,9 @@ async function addEnchere() {
     </div>
   </div>
 </template>
+
+<style scoped>
+.retrait {
+  display: grid;
+}
+</style>
