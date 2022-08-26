@@ -48,7 +48,7 @@ async function loadArticles() {
         </div>
       </select>
     </div>
-    
+
     <!-- Affichage liste article -->
     <div class="d-flex justify-content-around">
       <div v-for="article in listeArticles" :key="article.id">
@@ -60,12 +60,10 @@ async function loadArticles() {
             <p class="card-text">
               Fin de l'enchère : {{ article.dateFinEncheres }}
             </p>
+            <p class="card-text">Vendeur : {{ article.vendeur.pseudo }}</p>
 
             <router-link :to="`/articles/${article.noArticle}`">Detail Article
             </router-link>
-
-            <!-- TODO => créer un article avec un utilisateur pour pouvoir récupérer le pseudo sinon null -->
-            <!-- <p class="card-text">Vendeur : {{ article.utilisateur.pseudo }}</p> -->
           </div>
         </div>
       </div>

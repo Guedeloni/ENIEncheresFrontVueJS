@@ -1,6 +1,5 @@
 <script setup>
 import { ref, onMounted } from "vue";
-// import { useRouter }      from 'vue-router';
 
 const props = defineProps(["id"]);
 
@@ -12,7 +11,6 @@ const dateEnchere     = ref("");
 const montantEnchere  = ref();
 
 const errorMessage    = ref();
-// const router          = useRouter();
 
 onMounted(() => {
   loadArticles();
@@ -43,11 +41,8 @@ async function addEnchere() {
     Dateenchere: dateEnchere.value,
     montantEnchere: montantEnchere.value,
   };
-await axios
+  const result = await axios
     .post(`encheres/${props.id}`, body)
-    .then(response => {
-      window.location.reload();
-    })
     .catch(function (error) {
       console.log(error.response);
       if (error.response &&
@@ -57,8 +52,7 @@ await axios
       }
 
     });
-
-   enchere.value = result.data;
+  enchere.value = result.data;
 }
 </script>
 
@@ -70,6 +64,7 @@ await axios
       <div>Description : {{ article.description }}</div>
       <div>Meilleure offre : {{ enchere.montantEnchere }}</div>
       <div>Mise à prix : {{ article.prixInitial }}</div>
+      <div>Début de l'enchère : {{ article.dateDebutEncheres }}</div>
       <div>Fin de l'enchère : {{ article.dateFinEncheres }}</div>
 
       <!-- ********************* RETRAIT ************************* -->
