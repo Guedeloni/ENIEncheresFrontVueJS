@@ -1,10 +1,12 @@
 <script setup>
-import { ref } from 'vue'
+import { ref }          from 'vue';
+import { useRouter }    from 'vue-router';
 
-const pseudo = ref("")
+const pseudo        = ref("")
+const password      = ref("")
+const errorMessage  = ref("")
 
-const password = ref("")
-const messageConfirmation = ref("")
+const router        = useRouter()
 
 async function login() {
     // le corps de notre requête HTTP (format JSON)
@@ -13,16 +15,17 @@ async function login() {
         motDePasse: password.value
     }
     // On envoie une requête POST sur l'url BASE_URL + “login" avec les données définies plus haut
-    const result = await axios.post("login", body);
-    console.log(result);
-
+    const result = await axios.post("login", body)
+                            .catch(function (error) {
+                                console.log(error.response);
+                                if (error.response &&
+                                    error.response.data &&
+                                    error.response.data.status == 403) {
+                                        errorMessage.value = "Pseudo ou mot de passe non reconnu";
+                                }
+                            });
     localStorage.setItem('jwt', result.data);
-
-    // vider les inputs
-    pseudo.value = ""
-    password.value = ""
-
-    messageConfirmation.value = "Vous êtes bien connecté"
+    router.push('/');
 }
 
 </script>
@@ -69,7 +72,7 @@ async function login() {
         </div>
 
         <div class="d-flex justify-content-around text-success f-5 fw-bold w-50 my-3">
-            {{ messageConfirmation }}
+            {{ errorMessage }}
         </div>
     </div>
 

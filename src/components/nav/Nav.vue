@@ -61,12 +61,11 @@ function deconnexion() {
               <a class="nav-link" href="vente-article">Vendre un article</a>
             </li>
 
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="/categories">Categories</a>
-            </li>
-
-            <!-- Si l' utilisateur est ADMIN !  -->
+            <!-- Si l' utilisateur est ADMIN, affichage gestion CATEGORIES + USERS  -->
             <div v-if="currentUser.admin">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="/categories">Categories</a>
+              </li>
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="/admin">Admin</a>
               </li>
@@ -75,14 +74,16 @@ function deconnexion() {
             <!------------------------------------->
 
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="/profil">Mon profil <span class="login">{{
-                  currentUser.pseudo
-              }}</span></a>
+              <!-- <a class="nav-link active" aria-current="page" href="/profil"> -->
+                <!-- Mon profil <span class="login">{{currentUser.pseudo}}</span> -->
+              <a class="nav-link active" aria-current="page" href="/">
+                Connecté : <span class="login">{{currentUser.pseudo}}</span>
+              </a>
             </li>
 
             <li class="nav-item">
               <a class="nav-link" href="/" @click="deconnexion">Déconnexion</a>
-              </li>
+            </li>
 
           </ul>
         </div>
