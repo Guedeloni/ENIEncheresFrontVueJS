@@ -1,14 +1,18 @@
 <script setup>
 import { ref, onMounted } from "vue";
+// import { useRouter }      from 'vue-router';
 
 const props = defineProps(["id"]);
 
-const article = ref({});
-const retrait = ref("");
-const utilisateur = ref("");
-const enchere = ref("");
-const dateEnchere = ref("");
-const montantEnchere = ref();
+const article         = ref({});
+const retrait         = ref("");
+const utilisateur     = ref("");
+const enchere         = ref("");
+const dateEnchere     = ref("");
+const montantEnchere  = ref();
+
+const errorMessage    = ref();
+// const router          = useRouter();
 
 onMounted(() => {
   loadArticles();
@@ -17,19 +21,15 @@ onMounted(() => {
 
 async function loadArticles() {
   const result = await axios.get(`articles/${props.id}`);
-
   console.log("articles api", result);
-
   article.value = result.data;
+  montantEnchere = "";
 }
 
 async function loadEnchere() {
   const result = await axios.get(`encheres/${props.id}`);
-
-  console.log("encheress api", result);
-
+  console.log("encheres api", result);
   enchere.value = result.data;
-  
 }
 
 async function addEnchere() {
@@ -37,20 +37,19 @@ async function addEnchere() {
     Dateenchere: dateEnchere.value,
     montantEnchere: montantEnchere.value,
   };
-  const result = await axios
+  await axios
     .post(`encheres/${props.id}`, body)
+    .then(response => {
+      window.location.reload();
+    })
     .catch(function (error) {
       console.log(error.response);
-      if (
-        error.response &&
-        error.response.data &&
-        error.response.data.message
-      ) {
+      if (error.response &&
+          error.response.data &&
+          error.response.data.message) {
         errorMessage.value = error.response.data.message;
       }
     });
-
-  //    enchere.value = result.data;
 }
 </script>
 
@@ -60,21 +59,14 @@ async function addEnchere() {
     <div class="card-body">
       <h5 class="card-title mt-2">{{ article.nomArticle }}</h5>
       <div>Description : {{ article.description }}</div>
-      <div>Meilleur offre :{{ enchere.montantEnchere }}</div>
-
+      <div>Meilleure offre : {{ enchere.montantEnchere }}</div>
       <div>Mise à prix : {{ article.prixInitial }}</div>
       <div>Fin de l'enchère : {{ article.dateFinEncheres }}</div>
       <div>Retrait : {{ article.retrait }}</div>
       <div v-if="article.vendeur">Vendeur : {{ article.vendeur.pseudo }}</div>
       <div class="input-group">
-        <input
-          type="number"
-          class="form-control"
-          aria-label="Points amount (with dot and two decimal places)"
-          v-model="montantEnchere"
-        />
-        <span class="input-group-text"> Proposition pts</span>
-
+        <input type="number" class="form-control" aria-label="Points amount (with dot and two decimal places)"
+          v-model="montantEnchere"/>
         <button type="button" @click="addEnchere">Encherir</button>
       </div>
       <p>{{ errorMessage }}</p>
