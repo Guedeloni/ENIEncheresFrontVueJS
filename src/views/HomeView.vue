@@ -38,20 +38,13 @@ async function loadArticles() {
       <h4>Filtres:</h4>
     </div>
     <div class="input-group w-50 p-3">
-      <input
-        type="search"
-        class="form-control rounded"
-        placeholder="le nom de l'article ..."
-        aria-label="Search"
-        aria-describedby="search-addon"
-      />
+      <input type="search" class="form-control rounded" placeholder="le nom de l'article ..." aria-label="Search"
+        aria-describedby="search-addon" />
       <button type="button" class="btn btn-outline-primary">Rechercher</button>
     </div>
 
     <div class="input-group mb-3 w-50 p-3">
-      <label class="input-group-text" for="inputGroupSelect01"
-        >Catégories</label
-      >
+      <label class="input-group-text" for="inputGroupSelect01">Catégories</label>
       <select class="form-select" id="catégories" v-model="options">
         <div>
           <option disabled value="">Toutes</option>
@@ -63,132 +56,7 @@ async function loadArticles() {
         </div>
       </select>
     </div>
-
-    <!-- si l'utilisateur est connecté on affiche les champs Achats et Ventes  -->
-    <!-- TODO  -->
-    <!-- <div v-if="utilisateur"> -->
-
-    <div class="d-flex justify-content-around w-50 pb-4">
-      <div>
-        <div>
-          <input
-            type="radio"
-            id="achats"
-            value="achats"
-            v-model="type"
-            @click="recharger"
-          />
-          <label for="achats">Achats</label>
-        </div>
-
-        <div class="ms-5">
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              value="encheres_ouvertes"
-              id="encheres_ouvertes"
-              v-model="filtres"
-              :disabled="type == 'ventes'"
-            />
-            <label class="form-check-label" for="encheres_ouvertes">
-              enchères ouvertes
-            </label>
-          </div>
-
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              value="encheres_en_cours"
-              id="encheres_en_cours"
-              v-model="filtres"
-              :disabled="type == 'ventes'"
-            />
-            <label class="form-check-label" for="encheres_en_cours">
-              Mes enchères en cours
-            </label>
-          </div>
-
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              value="encheres_remporte"
-              id="encheres_remporte"
-              v-model="filtres"
-              :disabled="type == 'ventes'"
-            />
-            <label class="form-check-label" for="encheres_remporte">
-              Mes enchères remportées
-            </label>
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <div>
-          <!-- v-model le même entre achat et vente -->
-          <input
-            type="radio"
-            id="ventes"
-            value="ventes"
-            v-model="type"
-            @click="recharger"
-          />
-          <label for="ventes">Mes Ventes</label>
-        </div>
-
-        <!-- <c:choose>
-          <c:when test="${! empty utilisateur.pseudo}"> -->
-        <div class="ms-5">
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              value="ventes_en_cours"
-              id="ventes_en_cours"
-              v-model="filtres"
-              :disabled="type == 'achats'"
-            />
-            <label class="form-check-label" for="ventes_en_cours">
-              mes ventes en cours
-            </label>
-          </div>
-
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              value="ventes_non_debute"
-              id="ventes_non_debute"
-              v-model="filtres"
-              :disabled="type == 'achats'"
-            />
-            <label class="form-check-label" for="ventes_non_debute">
-              ventes non débutées
-            </label>
-          </div>
-
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              value="ventes_termine"
-              id="ventes_termine"
-              v-model="filtres"
-              :disabled="type == 'achats'"
-            />
-            <label class="form-check-label" for="ventes_termine">
-              ventes terminées
-            </label>
-          </div>
-        </div>
-        <!-- </c:when>
-        </c:choose> -->
-      </div>
-    </div>
-    <!-- </div> -->
+    >
 
     <!-- Affichage liste article -->
     <div class="d-flex justify-content-around">

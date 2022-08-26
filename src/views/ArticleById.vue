@@ -16,10 +16,15 @@ onMounted(() => {
 });
 
 async function loadArticles() {
-  const result = await axios.get(`articles/${props.id}`);
-
+  const result = await axios.get(`articles/${props.id}`)
+    .catch(function (error) {
+      console.log(error.response);
+      if (error.response && error.response.data && error.response.data.message) {
+        errorMessage.value = error.response.data.message;
+      }
+    });
+    
   console.log("articles api", result);
-
   article.value = result.data;
 }
 
@@ -29,7 +34,7 @@ async function loadEnchere() {
   console.log("encheress api", result);
 
   enchere.value = result.data;
-  
+
 }
 
 async function addEnchere() {
@@ -67,14 +72,8 @@ async function addEnchere() {
       <div>Retrait : {{ article.retrait }}</div>
       <div v-if="article.vendeur">Vendeur : {{ article.vendeur.pseudo }}</div>
       <div class="input-group">
-        <input
-          type="number"
-          class="form-control"
-          aria-label="Points amount (with dot and two decimal places)"
-          v-model="montantEnchere"
-        />
-        <span class="input-group-text"> Proposition pts</span>
-
+        <input type="number" class="form-control" aria-label="Points amount (with dot and two decimal places)"
+          v-model="montantEnchere" />
         <button type="button" @click="addEnchere">Encherir</button>
       </div>
       <p>{{ errorMessage }}</p>

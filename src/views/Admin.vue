@@ -1,8 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 
-const pseudo = ref("")
-const utilisateur = ref("")
 const listeUtilisateurs = ref([])
 
 // TODO ROLES dans le BACKEND

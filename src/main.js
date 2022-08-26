@@ -17,7 +17,7 @@ window.axios = axios.create({baseURL: 'http://localhost:8080/api/'});
 window.axios.interceptors.request.use(
 request => {
 const jwt = localStorage.getItem("jwt");
-console.log("jwt",jwt);
+//console.log("jwt",jwt);
 if ( jwt!= null){
 request.headers['Authorization'] = `Bearer ${jwt}`
 }
