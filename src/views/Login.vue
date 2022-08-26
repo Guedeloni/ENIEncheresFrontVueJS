@@ -21,7 +21,7 @@ async function login() {
                                 if (error.response &&
                                     error.response.data &&
                                     error.response.data.status == 403) {
-                                        errorMessage.value = "Pseudo ou mot de passe non reconnu";
+                                        errorMessage.value = "Pseudo inconnu ou mot de passe non reconnu";
                                 }
                             });
     localStorage.setItem('jwt', result.data);
@@ -67,11 +67,10 @@ async function login() {
 
         </form>
         <div>
-
             <a class="btn btn-primary mt-3" href="/inscription"> Créer un compte </a>
         </div>
 
-        <div class="d-flex justify-content-around text-success f-5 fw-bold w-50 my-3">
+        <div class="d-flex justify-content-around text-danger f-5 fw-bold w-50 my-3">
             {{ errorMessage }}
         </div>
     </div>

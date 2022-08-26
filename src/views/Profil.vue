@@ -1,17 +1,37 @@
 <script setup>
 
+import ModalProfilVue from "../components/modal/ModalProfil.vue"
 import { ref, onMounted, toRaw } from "vue"
 
-const props = defineProps(["id"])
 
+const props = defineProps(["id"])
 const utilisateur   = ref("");
+
+// REF => checkbox
 const type          = ref("achats");
 const listeArticles = ref([]);
 const filtres       = ref([]);
 
+// REF => modifier profil
+const avatar = ref("")
+const pseudo = ref("")
+const nom = ref("")
+const prenom = ref("")
+const email = ref("")
+const telephone = ref("")
+const rue = ref("")
+const codePostal = ref("")
+const ville = ref("")
+const newPassword = ref("")
+const currentPassword = ref("")
+const confirmPassword = ref("")
+
 onMounted(() => {
     getUSerById();
+    modifierProfil();
 });
+
+// ************* USER BY ID ************* //
 
 async function getUSerById() {
     const result = await axios.get(`utilisateurs/${props.id}`)
@@ -52,6 +72,42 @@ async function loadArticles() {
     console.log("Liste Articles", listeArticles);
 }
 
+// ************* MODIFIER ************* //
+
+async function modifierProfil() {
+    if (newPassword.value !== confirmPassword.value) {
+        messageError.value = "mot de passe différent !"
+        return null;
+    }
+
+    const body = {
+        avatar: avatar.pseudo,
+        pseudo: pseudo.value,
+        prenom: prenom.value,
+        nom: nom.value,
+        email: email.value,
+        telephone: telephone.value,
+        rue: rue.value,
+        codePostal: codePostal.value,
+        ville: ville.value,
+        motDePasse: newPassword.value
+    }
+
+    const result = await axios.put(`utilisateurs/${props.id}`, body)
+    console.log("modifier profil", result);
+}
+
+// ************* MODAL ************* //
+const modalVisible = ref(false);
+
+function showModal() {
+    modalVisible.value = true;
+}
+
+function closeModal() {
+    modalVisible.value = false;
+}
+
 </script>
 
 <template>
@@ -75,11 +131,18 @@ async function loadArticles() {
                     <div class="mb-3"><span class="text-secondary">Crédit : {{ utilisateur.credit }}</span></div>
                     </p>
 
-                    <!-- <a href="/modif_profil"> <input type="submit" value="Modifier" class="btn btn-primary" />
-                    </a> -->
-                    <input type="submit" value="Modifier" class="btn btn-primary" @click="putUserById"/>
+                    <button type="buttton" class="btn btn-primary" @click="showModal">Modifier</button>
                 </div>
             </div>
+
+            <!-- ********************* MODAL pour modifier le profil  ********************* -->
+            <!--   v-bind="utilisateur" permet de récupérer toutes les props -->
+            <ModalProfilVue 
+                v-bind="utilisateur" 
+                :show="modalVisible" 
+                :closeModal="closeModal"
+                :modifier-profil="modifierProfil" 
+            />
         </div>
 
         <div class="d-flex justify-content-around w-50 pb-4">
@@ -181,6 +244,7 @@ async function loadArticles() {
     display: grid;
     justify-content: center;
 }
+
 .card {
     margin-bottom: 2rem;
 }
