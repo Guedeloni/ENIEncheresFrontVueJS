@@ -3,6 +3,7 @@
 import { ref, onMounted } from "vue";
 
 const currentUser = ref({});
+
 onMounted(() => {
   loadCurrentUser();
 });
@@ -74,10 +75,13 @@ function deconnexion() {
             <!------------------------------------->
 
             <li class="nav-item">
-              <!-- <a class="nav-link active" aria-current="page" href="/profil"> -->
-                <!-- Mon profil <span class="login">{{currentUser.pseudo}}</span> -->
-              <a class="nav-link active" aria-current="page" href="/">
-                Connecté : <span class="login">{{currentUser.pseudo}}</span>
+              <router-link class="nav-link active" aria-current="page" :to="`/profil/${currentUser.id}`">Profil
+              </router-link>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page">
+                Connecté : <span class="login">{{ currentUser.pseudo }}</span>
               </a>
             </li>
 

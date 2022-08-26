@@ -31,8 +31,9 @@ const router = createRouter({
       component: () => import("@/views/VenteArticle.vue"),
     },
     {
-      path: "/profil",
+      path: "/profil/:id",
       name: "profil",
+      props: true,
       component: () => import("@/views/Profil.vue"),
     },
     {
