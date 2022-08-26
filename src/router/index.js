@@ -9,12 +9,6 @@ const router = createRouter({
       name: "home",
       component: HomeView,
     },
-    // {
-    //   path: "/:pseudo",
-    //   name: "nav",
-    //   props: true,
-    //   component: () => import("@/components/Nav.vue"),
-    // },
     {
       path: "/inscription",
       name: "inscription",
