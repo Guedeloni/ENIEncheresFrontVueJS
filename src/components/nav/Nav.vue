@@ -18,6 +18,10 @@ async function loadCurrentUser() {
   currentUser.value = result.data;
 }
 
+function deconnexion() {
+  localStorage.clear();
+}
+
 </script>
 
 <template>
@@ -32,7 +36,7 @@ async function loadCurrentUser() {
         <span class="navbar-toggler-icon"></span>
       </button>
 
-      <!--  Si l' utilisateur n'est pas connecté  -->
+      <!--  Si l' utilisateur n'est pas connecté, affichage INSCRIPTION/SE DECONNECTER  -->
       <div v-if="!currentUser.pseudo">
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -47,7 +51,7 @@ async function loadCurrentUser() {
         </div>
       </div>
 
-      <!-- Si l' utilisateur est connecté  -->
+      <!-- Si l' utilisateur est connecté, affichage ACTIONS POSSIBLES + MON PROFIL + DECONNEXION  -->
       <div v-if="currentUser.pseudo">
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -56,7 +60,6 @@ async function loadCurrentUser() {
             <li class="nav-item">
               <a class="nav-link" href="vente-article">Vendre un article</a>
             </li>
-
 
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="/categories">Categories</a>
@@ -72,7 +75,9 @@ async function loadCurrentUser() {
               }}</span></a>
             </li>
 
-            <li class="nav-item"><a class="nav-link" href="/">Déconnexion</a></li>
+            <li class="nav-item">
+              <a class="nav-link" href="/" @click="deconnexion">Déconnexion</a>
+              </li>
 
           </ul>
         </div>
