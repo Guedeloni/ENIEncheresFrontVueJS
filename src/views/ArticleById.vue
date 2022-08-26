@@ -54,9 +54,10 @@ async function addEnchere() {
       ) {
         errorMessage.value = error.response.data.message;
       }
+
     });
 
-  //    enchere.value = result.data;
+   enchere.value = result.data;
 }
 </script>
 
