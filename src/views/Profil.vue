@@ -132,7 +132,7 @@ function closeModal() {
                 v-bind="utilisateur" 
                 :show="modalVisible" 
                 :closeModal="closeModal"
-                :modifier-profil="modifierProfil" 
+                :modifierProfil="modifierProfil" 
             />
         </div>
 
