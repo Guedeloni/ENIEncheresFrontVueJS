@@ -28,52 +28,56 @@ const confirmPassword = ref("")
 
 onMounted(() => {
     getUSerById();
-    modifierProfil();
+    // modifierProfil();
 });
 
 // ************* USER BY ID ************* //
-
 async function getUSerById() {
     const result = await axios.get(`utilisateurs/${props.id}`)
-        .catch(function (error) {
+    .catch(function (error) {
             console.log(error.response);
         });
     utilisateur.value = result.data;
 }
 
-async function putUserById() {
-    // TODO
-}
-
+// ************* LOAD ARTICLES BY SELECTION ************* //
 async function loadArticles() {
-    const selection = 0;
-    console.log("Filtre", toRaw(filtres.value));
+    let selection = 0;
+    // console.log("Filtre", toRaw(filtres.value));
 
-    switch (toRaw(filtres.value)) {
-        case ["ventes_non_debutees"]:
-            selection = 1;
-            break;
-        case ["ventes_en_cours"]:
-            selection = 2;
-            break;
-        case ["ventes_terminees"]:
-            selection = 3;
-            break;
+    if (toRaw(filtres.value).length == 1)
+        switch (toRaw(filtres.value)[0]) {
+            case "ventes_non_debutees":
+                selection = 1;
+                break;
+            case "ventes_en_cours":
+                selection = 2;
+                break;
+            case "ventes_terminees":
+                selection = 3;
+                break;
+        }
+    if (toRaw(filtres.value).length == 2) {
+        if (toRaw(filtres.value)[0] == "ventes_non_debutees" || toRaw(filtres.value)[1] == "ventes_non_debutees") selection = 10;
+        if (toRaw(filtres.value)[0] == "ventes_en_cours" || toRaw(filtres.value)[1] == "ventes_en_cours") {
+            if (selection == 0) selection = 20;
+            else selection = selection + 2;
+        }
+        if (toRaw(filtres.value)[0] == "ventes_terminees" || toRaw(filtres.value)[1] == "ventes_terminees") {
+            selection = selection + 3;
+        }
     }
-    console.log("Checkbox", filtres);
-    console.log("Selection", selection);
+    if (toRaw(filtres.value).length == 3) selection = 123;
 
-    console.log("url", `articles/select/${selection}`);
-    // const result = await axios.get(`articles/select/${selection}`)
-    //         .catch(function (error) {
-    //         console.log(error.response);
-    //     });
-    // listeArticles.value = result.data;
-    console.log("Liste Articles", listeArticles);
+    console.log("url", `articles/${props.id}/${selection}`);
+    const result = await axios.get(`articles/${props.id}/${selection}`)
+            .catch(function (error) {
+            console.log(error.response);
+        });
+    listeArticles.value = result.data;
 }
 
-// ************* MODIFIER ************* //
-
+// ************* MODIFIER PROFIL ************* //
 async function modifierProfil() {
     if (newPassword.value !== confirmPassword.value) {
         messageError.value = "mot de passe différent !"
@@ -99,11 +103,9 @@ async function modifierProfil() {
 
 // ************* MODAL ************* //
 const modalVisible = ref(false);
-
 function showModal() {
     modalVisible.value = true;
 }
-
 function closeModal() {
     modalVisible.value = false;
 }
