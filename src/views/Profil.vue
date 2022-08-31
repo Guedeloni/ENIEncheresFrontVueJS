@@ -139,7 +139,7 @@ function closeModal() {
         <div class="d-flex justify-content-around w-50 pb-4">
             <div>
                 <div>
-                    <input type="radio" id="achats" value="achats" v-model="type" @click="recharger" />
+                    <input type="radio" id="achats" value="achats" v-model="achats" @click="recharger" />
                     <label for="achats">Achats</label>
                 </div>
 
