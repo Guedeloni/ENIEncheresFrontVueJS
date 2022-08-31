@@ -68,7 +68,7 @@ async function addEnchere() {
       <div>Fin de l'enchère : {{ article.dateFinEncheres }}</div>
 
       <!-- ********************* RETRAIT ************************* -->
-      <div v-if="retrait">
+      <div v-if="article.retrait">
         <div class="retrait">
           <div>Retrait : {{ article.retrait.rue }}</div>
           <p>{{ article.retrait.codePostal }} - {{ article.retrait.ville }}</p>

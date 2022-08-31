@@ -43,7 +43,6 @@ async function getUSerById() {
 // ************* LOAD ARTICLES BY SELECTION ************* //
 async function loadArticles() {
     let selection = 0;
-    // console.log("Filtre", toRaw(filtres.value));
 
     if (toRaw(filtres.value).length == 1)
         switch (toRaw(filtres.value)[0]) {
@@ -133,7 +132,7 @@ function closeModal() {
                     <div class="mb-3"><span class="text-secondary">Crédit : {{ utilisateur.credit }}</span></div>
                     </p>
 
-                    <button type="buttton" class="btn btn-primary" @click="showModal">Modifier</button>
+                    <button type="button" class="btn btn-primary" @click="showModal">Modifier (non fonctionnel)</button>
                 </div>
             </div>
 
@@ -219,7 +218,6 @@ function closeModal() {
 
         </div>
 
-        <p>{{filtres}}</p>
         <!-- Affichage liste article -->
         <div class="d-flex justify-content-around">
             <div v-for="article in listeArticles" :key="article.id">
@@ -237,7 +235,6 @@ function closeModal() {
                 </div>
             </div>
         </div>
-
     </div>
 </template>
 
