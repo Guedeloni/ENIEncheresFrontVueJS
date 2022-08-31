@@ -1,27 +1,16 @@
 <script setup>
-import { ref, onMounted } from "vue"
+
 import ModalProfilVue from "../components/modal/ModalProfil.vue"
+import { ref, onMounted, toRaw } from "vue"
 
-const props = defineProps(
-    [
-        "id",
-        "pseudo",
-        "nom",
-        "prenom",
-        "email",
-        "telephone",
-        "rue",
-        "codePostal",
-        "ville",
-        "credit",
-        "avatar"
-    ])
 
-const utilisateur = ref("");
+const props = defineProps(["id"])
+const utilisateur   = ref("");
 
 // REF => checkbox
-const type = ref("achats");
-const filtres = ref([]);
+const type          = ref("achats");
+const listeArticles = ref([]);
+const filtres       = ref([]);
 
 // REF => modifier profil
 const avatar = ref("")
@@ -39,30 +28,55 @@ const confirmPassword = ref("")
 
 onMounted(() => {
     getUSerById();
-    modifierProfil();
+    // modifierProfil();
 });
 
 // ************* USER BY ID ************* //
-
 async function getUSerById() {
     const result = await axios.get(`utilisateurs/${props.id}`)
-        .catch(function (error) {
+    .catch(function (error) {
             console.log(error.response);
-            if (error.response && error.response.data && error.response.data.message) {
-                errorMessage.value = error.response.data.message;
-            }
         });
-
-    // console.log("profil user", result)
     utilisateur.value = result.data;
 }
 
-function recharger() {
-    filtres.value = [];
+// ************* LOAD ARTICLES BY SELECTION ************* //
+async function loadArticles() {
+    let selection = 0;
+
+    if (toRaw(filtres.value).length == 1)
+        switch (toRaw(filtres.value)[0]) {
+            case "ventes_non_debutees":
+                selection = 1;
+                break;
+            case "ventes_en_cours":
+                selection = 2;
+                break;
+            case "ventes_terminees":
+                selection = 3;
+                break;
+        }
+    if (toRaw(filtres.value).length == 2) {
+        if (toRaw(filtres.value)[0] == "ventes_non_debutees" || toRaw(filtres.value)[1] == "ventes_non_debutees") selection = 10;
+        if (toRaw(filtres.value)[0] == "ventes_en_cours" || toRaw(filtres.value)[1] == "ventes_en_cours") {
+            if (selection == 0) selection = 20;
+            else selection = selection + 2;
+        }
+        if (toRaw(filtres.value)[0] == "ventes_terminees" || toRaw(filtres.value)[1] == "ventes_terminees") {
+            selection = selection + 3;
+        }
+    }
+    if (toRaw(filtres.value).length == 3) selection = 123;
+
+    console.log("url", `articles/${props.id}/${selection}`);
+    const result = await axios.get(`articles/${props.id}/${selection}`)
+            .catch(function (error) {
+            console.log(error.response);
+        });
+    listeArticles.value = result.data;
 }
 
-// ************* MODIFIER ************* //
-
+// ************* MODIFIER PROFIL ************* //
 async function modifierProfil() {
     if (newPassword.value !== confirmPassword.value) {
         messageError.value = "mot de passe différent !"
@@ -88,11 +102,9 @@ async function modifierProfil() {
 
 // ************* MODAL ************* //
 const modalVisible = ref(false);
-
 function showModal() {
     modalVisible.value = true;
 }
-
 function closeModal() {
     modalVisible.value = false;
 }
@@ -110,19 +122,17 @@ function closeModal() {
                 <div class="card-body">
                     <h5 class="card-title">{{ utilisateur.pseudo }}</h5>
                     <p class="card-text">
-                    <div class="mb-3"><span class="text-secondary">Nom :</span> {{ utilisateur.nom }}</div>
-                    <div class="mb-3"><span class="text-secondary">Prénom :</span> {{ utilisateur.prenom }}</div>
-                    <div class="mb-3"><span class="text-secondary">Email :</span> {{ utilisateur.email }}</div>
-                    <div class="mb-3"><span class="text-secondary">Telèphone :</span> {{ utilisateur.telephone }}</div>
-                    <div class="mb-3"><span class="text-secondary">Rue :</span> {{ utilisateur.rue }}</div>
-                    <div class="mb-3"><span class="text-secondary">Code postal :</span> {{ utilisateur.code_postal }}
-                    </div>
-                    <div class="mb-3"><span class="text-secondary">Ville :</span> {{ utilisateur.ville }}</div>
-                    <div class="mb-3"><span class="text-secondary">Crédit: {{ utilisateur.credit }}</span></div>
+                    <div class="mb-3"><span class="text-secondary">Nom : </span> {{ utilisateur.nom }}</div>
+                    <div class="mb-3"><span class="text-secondary">Prénom : </span> {{ utilisateur.prenom }}</div>
+                    <div class="mb-3"><span class="text-secondary">Email : </span> {{ utilisateur.email }}</div>
+                    <div class="mb-3"><span class="text-secondary">Téléphone : </span> {{ utilisateur.telephone }}</div>
+                    <div class="mb-3"><span class="text-secondary">Rue : </span> {{ utilisateur.rue }}</div>
+                    <div class="mb-3"><span class="text-secondary">Code postal : </span> {{ utilisateur.codePostal }}</div>
+                    <div class="mb-3"><span class="text-secondary">Ville : </span> {{ utilisateur.ville }}</div>
+                    <div class="mb-3"><span class="text-secondary">Crédit : {{ utilisateur.credit }}</span></div>
                     </p>
 
-                    <button type="buttton" class="btn btn-primary" @click="showModal">Modifier</button>
-
+                    <button type="button" class="btn btn-primary" @click="showModal">Modifier (non fonctionnel)</button>
                 </div>
             </div>
 
@@ -137,9 +147,10 @@ function closeModal() {
         </div>
 
         <div class="d-flex justify-content-around w-50 pb-4">
+            <!-- SELECTION DES ACHATS -->
             <div>
                 <div>
-                    <input type="radio" id="achats" value="achats" v-model="achats" @click="recharger" />
+                    <input type="radio" id="achats" value="achats" v-model="type" @click="loadArticles" />
                     <label for="achats">Achats</label>
                 </div>
 
@@ -148,7 +159,7 @@ function closeModal() {
                         <input class="form-check-input" type="checkbox" value="encheres_ouvertes" id="encheres_ouvertes"
                             v-model="filtres" :disabled="type == 'ventes'" />
                         <label class="form-check-label" for="encheres_ouvertes">
-                            enchères ouvertes
+                            Mes enchères ouvertes
                         </label>
                     </div>
 
@@ -170,36 +181,56 @@ function closeModal() {
                 </div>
             </div>
 
+            <!-- SELECTION DES VENTES -->
             <div>
                 <div>
                     <!-- v-model le même entre achat et vente -->
-                    <input type="radio" id="ventes" value="ventes" v-model="type" @click="recharger" />
+                    <input type="radio" id="ventes" value="ventes" v-model="type" />
                     <label for="ventes">Mes Ventes</label>
                 </div>
 
                 <div class="ms-5">
                     <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="ventes_non_debutees" id="ventes_non_debutees"
+                            v-model="filtres" @change="loadArticles" :disabled="type == 'achats'" />
+                        <label class="form-check-label" for="ventes_non_debutees">
+                            Mes ventes non débutées
+                        </label>
+                    </div>
+
+                    <div class="form-check">
                         <input class="form-check-input" type="checkbox" value="ventes_en_cours" id="ventes_en_cours"
-                            v-model="filtres" :disabled="type == 'achats'" />
+                            v-model="filtres" @change="loadArticles" :disabled="type == 'achats'" />
                         <label class="form-check-label" for="ventes_en_cours">
-                            mes ventes en cours
+                            Mes ventes en cours
                         </label>
                     </div>
 
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="ventes_non_debute" id="ventes_non_debute"
-                            v-model="filtres" :disabled="type == 'achats'" />
-                        <label class="form-check-label" for="ventes_non_debute">
-                            ventes non débutées
+                        <input class="form-check-input" type="checkbox" value="ventes_terminees" id="ventes_terminees"
+                            v-model="filtres" @change="loadArticles" :disabled="type == 'achats'" />
+                        <label class="form-check-label" for="ventes_terminees">
+                            Mes ventes terminées
                         </label>
                     </div>
+                </div>
+            </div>
 
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="ventes_termine" id="ventes_termine"
-                            v-model="filtres" :disabled="type == 'achats'" />
-                        <label class="form-check-label" for="ventes_termine">
-                            ventes terminées
-                        </label>
+        </div>
+
+        <!-- Affichage liste article -->
+        <div class="d-flex justify-content-around">
+            <div v-for="article in listeArticles" :key="article.id">
+                <div class="card" style="width: 18rem">
+                    <div class="card-body">
+                        <!-- <img class="card-img-top" :src="article.image_article" :alt="article.nomArticle"> -->
+                        <h5 class="card-title mt-2">{{ article.nomArticle }}</h5>
+                        <div>Description : {{ article.description }}</div>
+                        <!-- <div>Meilleure offre : {{ article.enchere.montantEnchere }}</div> -->
+                        <div>Mise à prix : {{ article.prixInitial }}</div>
+                        <div>Début de l'enchère : {{ article.dateDebutEncheres }}</div>
+                        <div>Fin de l'enchère : {{ article.dateFinEncheres }}</div>
+                        <div>Retrait : {{ article.retrait }}</div>
                     </div>
                 </div>
             </div>

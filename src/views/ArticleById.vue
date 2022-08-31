@@ -1,19 +1,16 @@
 <script setup>
 import { ref, onMounted } from "vue";
-// import { useRouter }      from 'vue-router';
 
 const props = defineProps(["id"]);
 
-const article = ref({});
-const retrait = ref("");
-const utilisateur = ref("");
-const enchere = ref("");
-const dateEnchere = ref("");
-const montantEnchere = ref();
-const enchereList = ref([])
+const article         = ref({});
+const retrait         = ref("");
+const utilisateur     = ref("");
+const enchere         = ref("");
+const dateEnchere     = ref("");
+const montantEnchere  = ref();
 
-const errorMessage = ref();
-// const router          = useRouter();
+const errorMessage    = ref();
 
 onMounted(() => {
   loadArticles();
@@ -47,11 +44,8 @@ async function addEnchere() {
     Dateenchere: dateEnchere.value,
     montantEnchere: montantEnchere.value,
   };
-  await axios
+  const result = await axios
     .post(`encheres/${props.id}`, body)
-    .then(response => {
-      window.location.reload();
-    })
     .catch(function (error) {
       console.log(error.response);
       if (error.response &&
@@ -61,7 +55,6 @@ async function addEnchere() {
       }
 
     });
-
   enchere.value = result.data;
 }
 </script>
@@ -80,7 +73,7 @@ async function addEnchere() {
           <!-- il est undefined ? pareil pour Retrait   -->
           <!-- et ça n'affiche plus la card donc TODO réussir à les afficher -->
           
-          <div v-if="categorie">
+          <div v-if="article.categorie">
             <div>Catégorie: {{  article.categorie.libelle  }}</div>
           </div>
           <div>Description : {{  article.description  }}</div>
@@ -89,7 +82,7 @@ async function addEnchere() {
           <div>Fin de l'enchère : {{  article.dateFinEncheres  }}</div>
 
           <!-- ********************* RETRAIT ************************* -->
-          <div v-if="retrait">
+          <div v-if="article.retrait">
             <div class="retrait">
               <div>Retrait : {{  article.retrait.rue  }}</div>
               <p>{{  article.retrait.codePostal  }} - {{  article.retrait.ville  }}</p>
