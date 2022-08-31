@@ -19,12 +19,12 @@ async function addCategorie() {
   };
 
   await axios.post("categories", body)
-  .catch(function (error) {
-    console.log(error.response);
-    if (error.response && error.response.data && error.response.data.message) {
-      errorMessage.value = error.response.data.message; // coresspond au message de la requet http
-    }
-  });
+    .catch(function (error) {
+      console.log(error.response);
+      if (error.response && error.response.data && error.response.data.message) {
+        errorMessage.value = error.response.data.message; // coresspond au message de la requet http
+      }
+    });
 
   loadCategories();
   libelle.value = "";
@@ -38,58 +38,67 @@ async function loadCategories() {
 </script>
 
 <template>
-  <main>
+  <div class="main-categorie">
     <h1>Categories</h1>
+    <div class="categorie">
 
-    <form method="post">
-      <section class="form-element">
-        <label for="libelle">Libelle : </label>
-        <!-- v-model permet d associer input a la variable "libelle" de notre modèle-->
+      <form method="post">
+        <section class="form-element">
+          <label for="libelle" class="libelle">Libelle : </label>
+          <!-- v-model permet d associer input a la variable "libelle" de notre modèle-->
 
-        <input id="libelle" type="text" v-model="libelle" />
-        <!-- <span class="error">{{ libelle }}></span> -->
-      </section>
-      <!-- pour ne pas qu on valide le formulaire ne pas oublier type"button"-->
-      <button type="button" @click="addCategorie">Validation</button>
-    </form>
-    <p>{{ errorMessage }}</p>
+          <input id="libelle" type="text" v-model="libelle" />
+          <!-- <span class="error">{{ libelle }}></span> -->
+        </section>
+        <!-- pour ne pas qu on valide le formulaire ne pas oublier type"button"-->
+        <button type="button" class="btn-categorie" @click="addCategorie">Validation</button>
+      </form>
+      <p>{{  errorMessage  }}</p>
 
-    <h2>Liste des Catégories</h2>
+      <div class="card" style="width: 25rem">
+        <div class="card-body">
+          <h5 class="card-title mt-2">Liste des Catégories</h5>
 
-    <!--pour faire un boucle on utilise <v-for>-->
-    <ul>
-      <li v-for="categorie in listeCategorie" v-bind:key="categorie.id">
-        {{ categorie.libelle }}
-      </li>
-    </ul>
-  </main>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Catégorie</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="categorie in listeCategorie" :key="categorie.id">
+                <th scope="row">{{  categorie.noCategorie  }}</th>
+                <td>{{  categorie.libelle  }}</td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </template>
 
 <style>
-nav {
-  display: flex;
-  align-items: center;
+.main-categorie {
+  margin: 0 auto;
+  text-align: center;
+  width: 800px;
 }
 
-nav li {
-  display: inline-block;
-  margin: 20px;
+h1, .btn-categorie {
+  margin-bottom: 2rem;
 }
 
-nav section {
-  display: flex;
-  align-items: center;
+.categorie {
+  display: grid;
+  justify-content: center;
 }
 
-nav section form {
-  margin: 0;
-}
-
-nav section button,
-.search-button {
-  margin-left: 5px;
-  font-size: 14px;
-  padding: 5px;
+.libelle {
+  margin-right: 5px;
 }
 
 form .form-element {
@@ -102,7 +111,7 @@ form .form-element label {
   text-align: right;
 }
 
-form button {
+.btn-categorie {
   border: none;
   padding: 7px;
   font-size: 16px;
@@ -131,24 +140,5 @@ form button {
 
 .error {
   color: red;
-}
-
-.table {
-  border-collapse: collapse;
-  border: 1px solid black;
-}
-
-.table thead tr {
-  background-color: #16a085;
-  color: white;
-}
-
-.table td,
-.table th {
-  border: 1px solid black;
-  padding: 5px;
-}
-ul {
-  list-style-type: none;
 }
 </style>
