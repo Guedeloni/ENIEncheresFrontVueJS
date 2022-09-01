@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from "vue"; // data()
+import { ref, onMounted } from "vue";
 
 const options = ref([]);
 const listeArticles = ref([]);
@@ -26,8 +26,9 @@ async function loadArticles() {
       <h1 class="mt-3">Liste des Enchères</h1>
     </div>
 
+    <!-- Recherche par filtre - TODO -->
     <div class="w-50">
-      <h4>Filtres:</h4>
+      <h4>Filtres : (non fonctionnel)</h4>
     </div>
     <div class="input-group w-50 p-3">
       <input type="search" class="form-control rounded" placeholder="le nom de l'article ..." aria-label="Search"
@@ -54,14 +55,11 @@ async function loadArticles() {
       <div v-for="article in listeArticles" :key="article.id">
         <div class="card" style="width: 18rem">
           <div class="card-body">
-            <!-- <img class="card-img-top" :src="article.image_article" :alt="article.nomArticle"> -->
+            <img class="card-img-top" :src="article.image_article" :alt="article.nomArticle">
             <h5 class="card-title mt-2">{{ article.nomArticle }}</h5>
-            <div>Prix : {{ article.prixInitial }} points</div>
-            <p class="card-text">
-              Fin de l'enchère : {{ article.dateFinEncheres }}
-            </p>
+            <div>Mise à prix : {{ article.prixInitial }} points</div>
+            <p class="card-text">Fin de l'enchère : {{ article.dateFinEncheres }}</p>
             <p class="card-text">Vendeur : {{ article.vendeur.pseudo }}</p>
-
             <router-link :to="`/articles/${article.noArticle}`">Detail Article
             </router-link>
           </div>

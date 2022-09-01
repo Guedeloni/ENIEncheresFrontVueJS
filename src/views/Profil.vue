@@ -1,10 +1,11 @@
 <script setup>
 
-import ModalProfilVue from "../components/modal/ModalProfil.vue"
 import { ref, onMounted, toRaw } from "vue"
+import ModalProfilVue from "../components/modal/ModalProfil.vue"
+import ResumArticle from "../components/ResumArticle.vue";
 
 
-const props = defineProps(["id"])
+const props         = defineProps(["id"])
 const utilisateur   = ref("");
 
 // REF => checkbox
@@ -123,6 +124,7 @@ function closeModal() {
         <h2 class="mt-3 mb-3">Mon profil</h2>
 
         <div v-if="utilisateur">
+            <!-- ********************* Affichage donnees du profil  ********************* -->
             <div class="card" style="width: 25rem;">
                 <img :src="utilisateur.avatar" class="card-img-top" :alt="utilisateur.pseudo">
                 <div class="card-body">
@@ -229,14 +231,13 @@ function closeModal() {
             <div v-for="article in listeArticles" :key="article.id">
                 <div class="card" style="width: 18rem">
                     <div class="card-body">
-                        <!-- <img class="card-img-top" :src="article.image_article" :alt="article.nomArticle"> -->
+                        <img class="card-img-top" :src="article.image_article" :alt="article.nomArticle">
                         <h5 class="card-title mt-2">{{ article.nomArticle }}</h5>
-                        <div>Description : {{ article.description }}</div>
-                        <!-- <div>Meilleure offre : {{ article.enchere.montantEnchere }}</div> -->
-                        <div>Mise à prix : {{ article.prixInitial }}</div>
-                        <div>Début de l'enchère : {{ article.dateDebutEncheres }}</div>
-                        <div>Fin de l'enchère : {{ article.dateFinEncheres }}</div>
-                        <div>Retrait : {{ article.retrait }}</div>
+                        <div>Mise à prix : {{ article.prixInitial }} points</div>
+                        <p class="card-text">Fin de l'enchère : {{ article.dateFinEncheres }}</p>
+                        <p class="card-text">Vendeur : {{ article.vendeur.pseudo }}</p>
+                        <router-link :to="`/articles/${article.noArticle}`">Detail Article
+                        </router-link>
                     </div>
                 </div>
             </div>
