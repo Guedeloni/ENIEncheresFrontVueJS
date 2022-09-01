@@ -1,6 +1,9 @@
 <script setup>
   import { ref, onMounted } from "vue";
-  const props = defineProps(["id"]);
+  import DetailArticle from "../components/DetailArticle.vue";
+
+  const props           = defineProps(["id"]);
+
   const article         = ref({});
   const enchereList     = ref();
   const enchere         = ref("");
@@ -8,7 +11,7 @@
   const montantEnchere  = ref();
   const meilleureOffre  = ref();
 
-  const errorMessage    = ref();
+  const errorMessage    = ref("");
 
   onMounted(() => {
     loadArticles();
@@ -40,6 +43,9 @@
 
     // Remise a blanc du champ d'encherissement
     // montantEnchere = "";
+    
+    // Remise a blanc du message d'erreur
+    errorMessage.value = "";
   }
 
   async function addEnchere() {
@@ -69,19 +75,13 @@
       <div class="detail">
         <div class="card" style="width: 25rem">
           <div class="card-body">
-            <img :src="article.imageURL" class="card-img-top cardDetail" :alt="article.nomArticle" />
-            <h5 class="card-title mt-2">{{  article.nomArticle  }}</h5>
-            <div v-if="article.categorie">Catégorie: {{  article.categorie.libelle  }}</div>
-            <div>Description : {{  article.description  }}</div>
-            <div>Meilleure offre : {{  meilleureOffre  }} points</div>
-            <!-- <div>Meilleure offre : {{  enchere.montantEnchere  }} points</div> -->
-            <div>Mise à prix : {{  article.prixInitial  }} points</div>
-            <div>Fin de l'enchère : {{  article.dateFinEncheres  }}</div>
-            <div v-if="article.retrait" class="retrait">
-              <div>Retrait : {{  article.retrait.rue  }}</div>
-              <p>{{  article.retrait.codePostal  }} - {{  article.retrait.ville  }}</p>
-            </div>
-            <div v-if="article.vendeur">Vendeur : {{  article.vendeur.pseudo  }}</div>
+            <!-- ********************* Affichage details de l'article ************************* -->
+            <DetailArticle
+              :art="article"
+              :bestOffre="meilleureOffre"
+            />
+
+            <!-- ********************* Affichage donnee d encherissement ************************* -->
             <div class="input-group">
               <input type="number" class="form-control" aria-label="Points amount (with dot and two decimal places)"
                 v-model="montantEnchere" />
@@ -91,8 +91,7 @@
           </div>
         </div>
   
-        <!-- ********************* Historique des enchères ************************* -->
-  
+        <!-- ********************* Affichage historique des enchères ************************* -->
         <div class="card" style="width: 25rem">
           <div class="card-body">
             <h5 class="card-title mt-2">Historique des enchères</h5>
@@ -111,7 +110,6 @@
                   <td>{{  enchere.dateEnchere  }}</td>
                   <td>{{  enchere.montantEnchere  }} points</td>
                 </tr>
-  
               </tbody>
             </table>
   
