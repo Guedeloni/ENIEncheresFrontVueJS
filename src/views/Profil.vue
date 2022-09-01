@@ -43,7 +43,11 @@ async function getUSerById() {
 // ************* LOAD ARTICLES BY SELECTION ************* //
 async function loadArticles() {
     let selection = 0;
-
+    // Usine à gaz pour transformation des combinaisons possibles
+    // de l'array de selection des boutons radio (R1, R2, R3)
+    // en variable a transmettre a l'API pour selectionner l'attribut etatVente
+    // (1 = "ventes_non_debutees", 2 = "ventes_en_cours", 3 = "ventes_terminees").
+    // Pour le cas d'1 seul bouton radio selectionne (R1 => 1 ou R2 => 2 ou R3 => 3) :
     if (toRaw(filtres.value).length == 1)
         switch (toRaw(filtres.value)[0]) {
             case "ventes_non_debutees":
@@ -56,6 +60,7 @@ async function loadArticles() {
                 selection = 3;
                 break;
         }
+    // Pour le cas de 2 boutons radio selectionnes (R1R2/R2R1 => 12 ou R1R3/R3R1 => 13 ou R2R3/R3R2 => 23) :
     if (toRaw(filtres.value).length == 2) {
         if (toRaw(filtres.value)[0] == "ventes_non_debutees" || toRaw(filtres.value)[1] == "ventes_non_debutees") selection = 10;
         if (toRaw(filtres.value)[0] == "ventes_en_cours" || toRaw(filtres.value)[1] == "ventes_en_cours") {
@@ -66,6 +71,7 @@ async function loadArticles() {
             selection = selection + 3;
         }
     }
+    // Pour le cas des 3 boutons radio selectionnes (R1R2R3 => 123) :
     if (toRaw(filtres.value).length == 3) selection = 123;
 
     console.log("url", `articles/${props.id}/${selection}`);
