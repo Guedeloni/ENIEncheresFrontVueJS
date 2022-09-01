@@ -6,6 +6,7 @@
   const enchere         = ref("");
   const dateEnchere     = ref("");
   const montantEnchere  = ref();
+  const meilleureOffre  = ref();
 
   const errorMessage    = ref();
 
@@ -14,6 +15,7 @@
   });
 
   async function loadArticles() {
+    // Recuperation des donnees de l'article
     const result = await axios.get(`articles/${props.id}`)
       .catch(function (error) {
         console.log(error.response);
@@ -25,7 +27,19 @@
     console.log("ENCHERELIST api", result.data.enchereList);
     article.value = result.data;
     enchereList.value = result.data.enchereList;
-    montantEnchere = "";
+
+    // Recuperation meilleure offre
+    const resultEnchere = await axios.get(`encheres/${props.id}`)
+      .catch(function (error) {
+        console.log(error.response);
+        if (error.response && error.response.data && error.response.data.message) {
+          errorMessage.value = error.response.data.message;
+        }
+      });
+    meilleureOffre.value = resultEnchere.data.montantEnchere;
+
+    // Remise a blanc du champ d'encherissement
+    // montantEnchere = "";
   }
 
   async function addEnchere() {
@@ -44,6 +58,7 @@
         }
       });
     enchere.value = result.data;
+    loadArticles();
   }
   </script>
   
@@ -58,8 +73,9 @@
             <h5 class="card-title mt-2">{{  article.nomArticle  }}</h5>
             <div v-if="article.categorie">Catégorie: {{  article.categorie.libelle  }}</div>
             <div>Description : {{  article.description  }}</div>
-            <div>Meilleure offre : {{  enchere.montantEnchere  }} €</div>
-            <div>Mise à prix : {{  article.prixInitial  }} €</div>
+            <div>Meilleure offre : {{  meilleureOffre  }} points</div>
+            <!-- <div>Meilleure offre : {{  enchere.montantEnchere  }} points</div> -->
+            <div>Mise à prix : {{  article.prixInitial  }} points</div>
             <div>Fin de l'enchère : {{  article.dateFinEncheres  }}</div>
             <div v-if="article.retrait" class="retrait">
               <div>Retrait : {{  article.retrait.rue  }}</div>
@@ -93,7 +109,7 @@
                 <tr v-for="enchere in enchereList" :key="enchere.id">
                   <th scope="row">{{  enchere.id  }}</th>
                   <td>{{  enchere.dateEnchere  }}</td>
-                  <td>{{  enchere.montantEnchere  }} €</td>
+                  <td>{{  enchere.montantEnchere  }} points</td>
                 </tr>
   
               </tbody>
