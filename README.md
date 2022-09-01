@@ -1,6 +1,11 @@
 # ENIEncheresFrontVueJS
+## Clone of E-Bay
+Learning project at ENI-Nantes
+- DB : MySQL
+- Back : Java with Spring and API Rest (https://github.com/Guedeloni/ENIEncheresSpring)
+- Front : Vue-JS
 
-This template should help get you started developing with Vue 3 in Vite.
+Guedeloni, <a href="https://github.com/LKONATE-c">@LKONATE-c</a> and <a href="https://github.com/thomas37000">@thomas37000</a> - Aug. 2022
 
 ## Recommended IDE Setup
 
